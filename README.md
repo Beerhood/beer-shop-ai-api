@@ -1,8 +1,8 @@
 # Beerhood: AI-Enhanced Craft Beer E-Commerce Platform
 
-![Beerhood](https://github.com/Beerhood/beer-shop-ai)
-![Version](https://github.com/Beerhood/beer-shop-ai)
-![License](https://github.com/Beerhood/beer-shop-ai?tab=Apache-2.0-1-ov-file)
+[![Beerhood](https://img.shields.io/badge/Beerhood-AI--Enhanced%20Craft%20Beer-f39c12)](https://github.com/Beerhood)
+[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/Beerhood/beer-shop-ai)
+[![License](https://img.shields.io/badge/license-Apache--2.0-amber)](https://github.com/Beerhood/beer-shop-ai/blob/main/LICENSE)
 
 ## 🍺 Project Overview
 
@@ -26,7 +26,6 @@ Beerhood is a next-generation e-commerce platform designed for craft beer enthus
 
 -   **Interactive Cart Management**: Add, remove, and adjust quantities with real-time total calculation
 -   **Streamlined Checkout Process**: Optimized flow for shipping information, payment options, and order confirmation
--   **Favorites Collection**: Save preferred products to a personalized wishlist for quick access and future purchases
 
 ### AI-Powered Beer Assistant
 
@@ -46,34 +45,38 @@ Beerhood is a next-generation e-commerce platform designed for craft beer enthus
 -   **Database**: PostgreSQL (with Prisma)
 -   **AI Integration**: [Groq](https://console.groq.com/home) API for the beer assistant
 -   **Authentication**: JWT, OAuth 2.0
--   **DevOps**: Docker, CI/CD with GitHub Actions
+-   **Tooling**: Docker; CI/CD with GitHub Actions; Pre-commit checks with Husky
 -   **Cloud Infrastructure**: Google Cloud deployment
 
 ## 🚀 Installation & Setup
 
+Clone the repository
+
 ```bash
-# Clone the repository
 git clone https://github.com/Beerhood/beer-shop-ai.git
 ```
 
+Navigate to the project directory
+
 ```bash
-# Navigate to the project directory
 cd beer-shop-ai
 ```
 
+Install dependencies
+
 ```bash
-# Install dependencies
 npm install
 ```
 
-```bash
-# Configure environment variables
-cp .env.example .env
-# Edit .env with your configuration
-```
+Configure environment variables and edit with your configuration
 
 ```bash
-# Start development server
+cp .env.example .env
+```
+
+Start development server
+
+```bash
 npm run dev
 ```
 
