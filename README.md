@@ -12,41 +12,41 @@ Beerhood is a next-generation e-commerce platform designed for craft beer enthus
 
 ### Product Catalog & Discovery
 
--   **Comprehensive Inventory Management**: Browse through a diverse range of beverages and complementary products
--   **Advanced Search & Filtering**: Find products by origin country, style, ABV percentage, IBU rating, density, brand, and more
--   **Detailed Product Pages**: High-resolution imagery, comprehensive descriptions, specifications, and pricing information
+- **Comprehensive Inventory Management**: Browse through a diverse range of beverages and complementary products
+- **Advanced Search & Filtering**: Find products by origin country, style, ABV percentage, IBU rating, density, brand, and more
+- **Detailed Product Pages**: High-resolution imagery, comprehensive descriptions, specifications, and pricing information
 
 ### User Authentication & Management
 
--   **Multi-platform Authentication**: Sign in using OAuth providers (Google, Facebook) or traditional email/password
--   **Account Security**: Robust password recovery and reset functionality with multi-factor authentication
--   **User Profile**: Comprehensive profile management including contact details, date of birth verification, and delivery addresses
+- **Multi-platform Authentication**: Sign in using OAuth providers (Google, Facebook) or traditional email/password
+- **Account Security**: Robust password recovery and reset functionality with multi-factor authentication
+- **User Profile**: Comprehensive profile management including contact details, date of birth verification, and delivery addresses
 
 ### Shopping Experience
 
--   **Interactive Cart Management**: Add, remove, and adjust quantities with real-time total calculation
--   **Streamlined Checkout Process**: Optimized flow for shipping information, payment options, and order confirmation
+- **Interactive Cart Management**: Add, remove, and adjust quantities with real-time total calculation
+- **Streamlined Checkout Process**: Optimized flow for shipping information, payment options, and order confirmation
 
 ### AI-Powered Beer Assistant
 
--   **Personalized Recommendations**: Uses AI assistant to suggest products based on user preferences and past purchases
--   **Interactive Consultation**: Conversational interface for helping users discover new beers matching their taste profiles
--   **Knowledge Base**: Comprehensive information about beer styles, brewing techniques, and food pairings
+- **Personalized Recommendations**: Uses AI assistant to suggest products based on user preferences and past purchases
+- **Interactive Consultation**: Conversational interface for helping users discover new beers matching their taste profiles
+- **Knowledge Base**: Comprehensive information about beer styles, brewing techniques, and food pairings
 
 ### Engagement & Communication
 
--   **Product Reviews & Ratings**: User-generated content to help inform purchasing decisions
--   **Transactional Email Notifications**: Order confirmations and shipping updates
+- **Product Reviews & Ratings**: User-generated content to help inform purchasing decisions
+- **Transactional Email Notifications**: Order confirmations and shipping updates
 
 ## 🛠️ Technology Stack
 
--   **Frontend**: Angular + Angular material / PrimeNG
--   **Backend**: Node.js, Nest.js, RabbitMQ, RESTful API
--   **Database**: PostgreSQL (with Prisma)
--   **AI Integration**: [Groq](https://console.groq.com/home) API for the beer assistant
--   **Authentication**: JWT, OAuth 2.0
--   **Tooling**: Docker; CI/CD with GitHub Actions; Pre-commit checks with Husky
--   **Cloud Infrastructure**: Google Cloud deployment
+- **Frontend**: Angular + Angular material / PrimeNG
+- **Backend**: Node.js, Nest.js, RabbitMQ, RESTful API
+- **Database**: PostgreSQL (with Prisma)
+- **AI Integration**: [Groq](https://console.groq.com/home) API for the beer assistant
+- **Authentication**: JWT, OAuth 2.0
+- **Tooling**: Docker; CI/CD with GitHub Actions; Pre-commit checks with Husky
+- **Cloud Infrastructure**: Google Cloud deployment
 
 ## 🚀 Installation & Setup
 
@@ -82,9 +82,9 @@ npm run dev
 
 ## 📬 Contact
 
--   **Project Lead**: [Zhukov Vladyslav](mailto:zhukov.vladyslav.vitaliyovych@gmail.com)
--   **Full Stack**: [Buryachok Oleh](https://t.me/kowaaalskii)
--   **Full Stack**: [Kurenkov Maksym](https://t.me/Pelmen_3000)
+- **Project Lead**: [Zhukov Vladyslav](mailto:zhukov.vladyslav.vitaliyovych@gmail.com)
+- **Full Stack**: [Buryachok Oleh](https://t.me/kowaaalskii)
+- **Full Stack**: [Kurenkov Maksym](https://t.me/Pelmen_3000)
 
 ---
 
