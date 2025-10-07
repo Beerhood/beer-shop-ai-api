@@ -10,11 +10,14 @@ fi
 echo "Successfully."
 
 echo "Linting project..."
-npm run lint:check && echo "Successfully."
+npm run lint:check
+echo "Successfully."
 
 echo "Typescript typecheck (no emit)..."
-npm run typecheck && echo "Successfully."
+npm run typecheck
+echo "Successfully."
 
 echo "Testing..."
-npm run test:test && echo "Successfully."
+npm run test:test
+echo "Successfully."
 
