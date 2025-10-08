@@ -42,7 +42,7 @@ Beerhood is a next-generation e-commerce platform designed for craft beer enthus
 
 - **Frontend**: Angular + Angular material / PrimeNG
 - **Backend**: Node.js, Nest.js, RabbitMQ, RESTful API
-- **Database**: PostgreSQL (with Prisma)
+- **Database**: MongoDB (with mongoose)
 - **AI Integration**: [Groq](https://console.groq.com/home) API for the beer assistant
 - **Authentication**: JWT, OAuth 2.0
 - **Tooling**: Docker; CI/CD with GitHub Actions; Pre-commit checks with Husky
