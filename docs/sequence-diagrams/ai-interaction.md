@@ -7,8 +7,8 @@ sequenceDiagram
     actor User
     participant Frontend
     participant Backend
-    participant Database as MongoDB
-    participant AIService as Groq API
+    participant Database
+    participant AIService
 
     Title: AI Beer Assistant Recommendation Flow
 
