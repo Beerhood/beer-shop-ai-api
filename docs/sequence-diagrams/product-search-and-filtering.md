@@ -1,6 +1,6 @@
 # Sequence Diagram: Product Search and Filtering
 
-This diagram illustrates the process of a user searching for products and applying filters, including caching and interaction with a dedicated search engine.
+This diagram illustrates the process of a user searching for products and applying filters, including caching and direct database querying.
 
 ```mermaid
 sequenceDiagram
@@ -8,7 +8,6 @@ sequenceDiagram
     participant Frontend
     participant Backend
     participant Cache
-    participant SearchEngine
     participant Database
 
     Title: Product Search and Filtering Flow with Caching
@@ -27,16 +26,11 @@ sequenceDiagram
     alt Cache Hit
         note over Backend: Prepare response from cached results
     else Cache Miss
-        note over Backend: No results in cache, querying search engine
-        Backend->>Backend: Construct native query for the search engine
+        note over Backend: No results in cache, querying database directly
+        Backend->>Backend: Construct database query with search and filter parameters
 
-        Backend->>+SearchEngine: Search with constructed query, filters, and pagination
-        SearchEngine-->>-Backend: Return list of product IDs and search metadata
-
-        opt If search engine returns only IDs
-            Backend->>+Database: Fetch full product details by IDs
-            Database-->>-Backend: Return full product data
-        end
+        Backend->>+Database: Execute query with filters, search terms, and pagination
+        Database-->>-Backend: Return matching products and metadata
 
         Backend->>Backend: Format the final product list and pagination data
 
