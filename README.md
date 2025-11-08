@@ -48,6 +48,10 @@ Beerhood is a next-generation e-commerce platform designed for craft beer enthus
 - **Tooling**: Docker; CI/CD with GitHub Actions; Pre-commit checks with Husky
 - **Cloud Infrastructure**: Google Cloud deployment
 
+## 📄 API Docs
+
+[http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+
 ## 🚀 Installation & Setup
 
 Clone the repository
