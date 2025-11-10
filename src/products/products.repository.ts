@@ -10,10 +10,10 @@ export class ProductsRepository extends BaseRepository<IProduct> {
   }
   override find(
     filter: FilterQuery<IProduct>,
-    sort: Record<string, SortOrder>,
-    limit: number,
-    skip: number,
-    search: FilterQuery<IProduct>,
+    sort?: Record<string, SortOrder>,
+    limit?: number,
+    skip?: number,
+    search?: FilterQuery<IProduct>,
     projection?: NonNullable<unknown> | string | string[],
     options?: NonNullable<unknown>,
   ) {

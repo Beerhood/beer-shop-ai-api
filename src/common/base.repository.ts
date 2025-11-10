@@ -88,10 +88,10 @@ export abstract class BaseRepository<T> {
 
   find(
     filter: FilterQuery<T>,
-    sort: Record<string, SortOrder>,
-    limit: number,
-    skip: number,
-    search: FilterQuery<T>,
+    sort?: Record<string, SortOrder>,
+    limit?: number,
+    skip?: number,
+    search?: FilterQuery<T>,
     projection?: NonNullable<unknown> | string | string[],
     options?: NonNullable<unknown>,
   ) {
