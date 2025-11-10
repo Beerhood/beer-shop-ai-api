@@ -85,6 +85,7 @@ export abstract class BaseRepository<T> {
    * @see {@link https://mongoosejs.com/docs/api/model.html#model_Model.find}
    * @returns {*}
    */
+
   find(
     filter: FilterQuery<T>,
     sort: Record<string, SortOrder>,
@@ -99,6 +100,16 @@ export abstract class BaseRepository<T> {
       query = query.skip(skip).limit(limit);
     }
     return query;
+  }
+
+  /**
+   * Returns the number of documents that match filter or search params
+   * @param {object} filter
+   * @param {object} options
+   * @returns {*}
+   */
+  count(filter: FilterQuery<T>, search: FilterQuery<T>, options?: NonNullable<unknown>) {
+    return this.model.countDocuments({ ...filter, ...search }, options);
   }
 
   /**
