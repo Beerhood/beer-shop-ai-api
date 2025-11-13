@@ -3,19 +3,13 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/users/users.module';
 import { JwtModule, JwtModuleAsyncOptions } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { AUTH_SERVICE_TOKEN } from './constants/auth.const';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 
 const jwtModuleAsyncOptions: JwtModuleAsyncOptions = {
-  inject: [ConfigService],
-  /*@ts-expect-error using Joi thats why configService.get<string> works*/
-  useFactory: (configService: ConfigService) => ({
-    secret: configService.get<string>('jwt.secret'),
-    signOptions: {
-      expiresIn: configService.get<string>('jwt.expiresIn'),
-    },
-  }),
+  useFactory: () => ({}),
 };
 
 @Module({
@@ -27,6 +21,8 @@ const jwtModuleAsyncOptions: JwtModuleAsyncOptions = {
       useClass: AuthService,
     },
     GoogleStrategy,
+    JwtStrategy,
+    JwtRefreshStrategy,
   ],
   exports: [AUTH_SERVICE_TOKEN],
 })

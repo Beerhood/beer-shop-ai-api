@@ -1,10 +1,7 @@
+import { UserPayload } from '../../auth/interfaces/auth-requests.interface';
+
 declare namespace Express {
   export interface Request {
-    user?: {
-      email: string;
-      firstName: string;
-      lastName: string;
-      accessToken: string;
-    };
+    user?: UserPayload;
   }
 }
