@@ -14,6 +14,7 @@ export interface IUser {
   lastName: string;
   role: UserRoles;
   birthDate: Date;
+  address?: string;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -36,6 +37,7 @@ const UserSchema = new Schema<IUser>(
       required: true,
     },
     birthDate: { type: Date, maxLength: 30, required: true },
+    address: { type: String, maxLength: 1000, trim: true, required: false },
   },
   {
     versionKey: false,

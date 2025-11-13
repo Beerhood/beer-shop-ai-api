@@ -4,6 +4,7 @@ import { ProductTypes } from '@utils/enums';
 
 export interface IProduct {
   name: string;
+  image: string;
   description: string;
   type: Types.ObjectId | string;
   price: number;
@@ -15,6 +16,7 @@ export interface IProduct {
 const ProductSchema = new Schema<IProduct>(
   {
     name: { type: String, maxLength: 250, trim: true, required: true },
+    image: { type: String, maxLength: 1000, trim: true, required: true },
     description: { type: String, maxLength: 3000, trim: true, required: true },
     type: {
       type: Schema.Types.ObjectId,
