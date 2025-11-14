@@ -1,7 +1,15 @@
-import { UserPayload } from '../../auth/interfaces/auth-requests.interface';
+import {
+  GoogleUserPayload,
+  JwtRefreshPayload,
+  JwtPayload,
+} from 'src/auth/interfaces/auth-payloads.interface';
 
-declare namespace Express {
-  export interface Request {
-    user?: UserPayload;
+type UserPayloads = GoogleUserPayload | JwtPayload | JwtRefreshPayload;
+
+declare global {
+  namespace Express {
+    export interface Request {
+      user?: UserPayloads;
+    }
   }
 }
