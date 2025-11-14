@@ -3,8 +3,8 @@ import { Types } from 'mongoose';
 import { OrderStatuses } from '@utils/enums';
 
 export interface IOrder {
-  user: Types.ObjectId;
-  products: [Types.ObjectId];
+  user: Types.ObjectId | string;
+  products: [Types.ObjectId | string];
   address: string;
   totalPrice: number;
   status: OrderStatuses;

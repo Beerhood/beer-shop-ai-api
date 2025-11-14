@@ -9,8 +9,11 @@ export interface IProduct {
   type: Types.ObjectId | string;
   price: number;
   productType: ProductTypes;
-  country?: string;
-  ABV?: number;
+  details: {
+    country?: string;
+    ABV?: number;
+    flavour?: string;
+  };
 }
 
 const ProductSchema = new Schema<IProduct>(
@@ -33,8 +36,13 @@ const ProductSchema = new Schema<IProduct>(
       trim: true,
       required: true,
     },
-    country: { type: String, maxLength: 250, trim: true, required: false },
-    ABV: { type: Number, min: 0, max: 100, required: false },
+    details: {
+      type: {
+        country: { type: String, maxLength: 250, trim: true, required: false },
+        ABV: { type: Number, min: 0, max: 100, required: false },
+        flavour: { type: String, maxLength: 250, trim: true, required: false },
+      },
+    },
   },
   {
     versionKey: false,

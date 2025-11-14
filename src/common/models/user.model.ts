@@ -20,13 +20,16 @@ export interface IUser {
 const UserSchema = new Schema<IUser>(
   {
     email: { type: String, maxLength: 250, unique: true, trim: true, required: true },
-    sessions: [
-      {
-        refreshToken: { type: String, required: true },
-        createdAt: { type: Date, default: Date.now },
-        expiresAt: { type: Date, required: true, index: true },
-      },
-    ],
+    sessions: {
+      type: [
+        {
+          refreshToken: { type: String, required: true },
+          createdAt: { type: Date, default: Date.now },
+          expiresAt: { type: Date, required: true, index: true },
+        },
+      ],
+      required: true,
+    },
     firstName: { type: String, maxLength: 250, trim: true, required: true },
     lastName: { type: String, maxLength: 250, trim: true, required: true },
     role: {
