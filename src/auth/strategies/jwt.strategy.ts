@@ -7,18 +7,14 @@ import { JwtPayload } from '../interfaces/auth-payloads.interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(configService: ConfigService<AppConfiguration>) {
-    const accessTokenSecret = configService.get('jwt.accessTokenSecret', {
-      infer: true,
-    });
-
+  constructor(private readonly configService: ConfigService<AppConfiguration>) {
+    const jwtConfig = configService.get('jwt', { infer: true })!;
     const options: StrategyOptions = {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: accessTokenSecret,
+      secretOrKey: jwtConfig.accessTokenSecret,
     };
-
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     super(options);
   }

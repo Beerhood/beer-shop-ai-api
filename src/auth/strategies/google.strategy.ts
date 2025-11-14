@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback, Profile } from 'passport-google-oauth20';
 import { ConfigService } from '@nestjs/config';
+import { AppConfiguration } from 'src/config/configuration';
 import {
   GOOGLE_STRATEGY_NAME,
   EMAIL_NOT_PROVIDED_BY_GOOGLE_EXCEPTION,
@@ -10,13 +11,15 @@ import { GoogleUserPayload } from '../interfaces/auth-payloads.interface';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, GOOGLE_STRATEGY_NAME) {
-  constructor(private readonly configService: ConfigService) {
-    super({
-      clientID: configService.get<string>('google.clientId')!,
-      clientSecret: configService.get<string>('google.clientSecret')!,
-      callbackURL: configService.get<string>('google.callbackUrl')!,
+  constructor(private readonly configService: ConfigService<AppConfiguration>) {
+    const googleConfig = configService.get('google', { infer: true })!;
+    const options = {
+      clientID: googleConfig.clientId!,
+      clientSecret: googleConfig.clientSecret!,
+      callbackURL: googleConfig.callbackUrl,
       scope: ['email', 'profile'],
-    });
+    };
+    super(options);
   }
 
   validate(
@@ -31,7 +34,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, GOOGLE_STRATEGY_N
     }
     const user: GoogleUserPayload = {
       email: emails[0].value,
-      firstName: name?.givenName ?? 'Bob',
+      firstName: name?.givenName ?? 'Beer Bob',
       lastName: name?.familyName ?? '',
     };
     done(null, user);

@@ -9,6 +9,7 @@ import { GoogleUserPayload, JwtPayload } from './interfaces/auth-payloads.interf
 import { AppConfiguration } from 'src/config/configuration';
 import { AuthTokensResponse } from './interfaces/auth-responses.interface';
 import { RefreshTokensRequest } from './interfaces/auth-requests.interface';
+import { AUTH_ACCESS_DENIED_EXCEPTION } from './constants/auth.const';
 
 @Injectable()
 export class AuthService implements AuthServiceInterface {
@@ -43,10 +44,10 @@ export class AuthService implements AuthServiceInterface {
   async refreshTokens(req: RefreshTokensRequest): Promise<AuthTokensResponse> {
     const { userId, refreshToken } = req;
     const user: UserInterface = await this.usersService.findUserById(userId);
-    if (!user.hashedRefreshToken) throw new UnauthorizedException('Access Denied');
+    if (!user.hashedRefreshToken) throw new UnauthorizedException(AUTH_ACCESS_DENIED_EXCEPTION);
 
     const matches = await bcrypt.compare(refreshToken, user.hashedRefreshToken);
-    if (!matches) throw new UnauthorizedException('Access Denied');
+    if (!matches) throw new UnauthorizedException(AUTH_ACCESS_DENIED_EXCEPTION);
 
     const tokens = await this.getTokens(userId, user.email, user.role);
     await this.updateRefreshTokenHash(userId, tokens.refreshToken);
