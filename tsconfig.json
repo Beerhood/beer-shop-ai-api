@@ -22,6 +22,10 @@
     "noFallthroughCasesInSwitch": false,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "exactOptionalPropertyTypes": true
+    "exactOptionalPropertyTypes": true,
+    "paths": {
+      "@utils/*": ["./src/utils/*"],
+      "@common/*": ["./src/common/*"]
+    }
   }
 }
