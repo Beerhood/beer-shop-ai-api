@@ -2,8 +2,9 @@ import { Injectable, Inject, UnauthorizedException, NotFoundException } from '@n
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
-import { UserInterface, UsersServiceInterface } from '../users/users.service';
-import { USER_SERVICE_TOKEN } from 'src/users/users.module';
+import { User } from '@common/models/';
+import { UsersServiceInterface } from '../users/users.service'; // PLACEHOLDER, NEED TO BE IMPLEMENTED IN FUTURE
+import { USER_SERVICE_TOKEN } from 'src/users/users.module'; // PLACEHOLDER, NEED TO BE IMPLEMENTED IN FUTURE
 import { AuthServiceInterface } from './interfaces/auth-service.interface';
 import { GoogleUserPayload, JwtPayload } from './interfaces/auth-payloads.interface';
 import { AppConfiguration } from 'src/config/configuration';
@@ -21,7 +22,7 @@ export class AuthService implements AuthServiceInterface {
   ) {}
 
   async signIn(googleUser: GoogleUserPayload): Promise<AuthTokensResponse> {
-    let user: UserInterface;
+    let user: User;
     try {
       user = await this.usersService.findUserByEmail(googleUser.email);
     } catch (error) {
@@ -36,17 +37,18 @@ export class AuthService implements AuthServiceInterface {
         throw error;
       }
     }
-    const tokens = await this.getTokens(user.userId, user.email, user.role);
-    await this.updateRefreshTokenHash(user.userId, tokens.refreshToken);
+    const tokens = await this.getTokens(user._id, user.email, user.role);
+    await this.updateRefreshTokenHash(user._id, tokens.refreshToken);
     return tokens;
   }
 
   async refreshTokens(req: RefreshTokensRequest): Promise<AuthTokensResponse> {
     const { userId, refreshToken } = req;
-    const user: UserInterface = await this.usersService.findUserById(userId);
-    if (!user.hashedRefreshToken) throw new UnauthorizedException(AUTH_ACCESS_DENIED_EXCEPTION);
+    const user: User = await this.usersService.findUserById(userId);
+    if (!user.sessions[0].refreshToken)
+      throw new UnauthorizedException(AUTH_ACCESS_DENIED_EXCEPTION);
 
-    const matches = await bcrypt.compare(refreshToken, user.hashedRefreshToken);
+    const matches = await bcrypt.compare(refreshToken, user.sessions[0].refreshToken);
     if (!matches) throw new UnauthorizedException(AUTH_ACCESS_DENIED_EXCEPTION);
 
     const tokens = await this.getTokens(userId, user.email, user.role);
