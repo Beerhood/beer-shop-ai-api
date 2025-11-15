@@ -1,12 +1,20 @@
+import { ProductTypes } from '@utils/enums';
 import { Schema, model } from 'mongoose';
 
 export interface Type {
   name: string;
+  productType: ProductTypes;
 }
 
 const TypeSchema = new Schema<Type>(
   {
     name: { type: String, maxLength: 250, unique: true, trim: true, required: true },
+    productType: {
+      type: String,
+      enum: Object.values(ProductTypes),
+      trim: true,
+      required: true,
+    },
   },
   {
     versionKey: false,

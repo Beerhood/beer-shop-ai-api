@@ -11,8 +11,9 @@ export interface Product {
   productType: ProductTypes;
   details: {
     country?: string;
-    ABV?: number;
-    flavour?: string;
+    ABV?: number; // Alcohol By Volume, measure of the amount of pure alcohol
+    IBU?: number; // International Bitterness Units, measure of a beer's bitterness
+    OG?: number; // Original Gravity, measure of the density of wort before yeast is added for fermentation
   };
 }
 
@@ -40,7 +41,8 @@ const ProductSchema = new Schema<Product>(
       type: {
         country: { type: String, maxLength: 250, trim: true, required: false },
         ABV: { type: Number, min: 0, max: 100, required: false },
-        flavour: { type: String, maxLength: 250, trim: true, required: false },
+        IBU: { type: Number, min: 3, max: 100, required: false },
+        OG: { type: Number, min: 1.0, max: 1.1, required: false },
       },
     },
   },
