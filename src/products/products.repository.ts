@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/base.repository';
+import { BaseRepository } from '@common/database/base.repository';
 import { Product, ProductsModel } from '@common/models/';
 import { FilterQuery, SortOrder } from 'mongoose';
 

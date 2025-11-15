@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from '@common/base.repository';
+import { BaseRepository } from '@common/database/base.repository';
 import { Type, TypesModel } from '@common/models/';
 
 @Injectable()
