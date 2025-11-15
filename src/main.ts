@@ -4,17 +4,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import cookieParser from 'cookie-parser';
 import { getDBConnection } from '@utils/db';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-
-  app.setGlobalPrefix('api');
-
-  app.use(cookieParser());
 
   const config = new DocumentBuilder()
     .setTitle('Beerhood API')

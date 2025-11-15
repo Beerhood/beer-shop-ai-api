@@ -29,8 +29,6 @@ const configModule = ConfigModule.forRoot({
 });
 
 @Module({
-  controllers: [],
-  providers: [],
   imports: [
     configModule,
     CommonModule,
