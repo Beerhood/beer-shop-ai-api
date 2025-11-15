@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import * as Joi from 'joi';
-import { CommonModule } from './common/common.module';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { OrdersModule } from './orders/orders.module';
@@ -33,7 +32,6 @@ const configModule = ConfigModule.forRoot({
   providers: [],
   imports: [
     configModule,
-    CommonModule,
     AuthModule,
     UsersModule,
     ProductsModule,
