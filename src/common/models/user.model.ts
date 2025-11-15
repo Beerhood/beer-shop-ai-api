@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { UserRoles } from '@utils/enums';
 
-export interface IUser {
+export interface User {
   email: string;
   sessions: [
     {
@@ -17,7 +17,7 @@ export interface IUser {
   address?: string;
 }
 
-const UserSchema = new Schema<IUser>(
+const UserSchema = new Schema<User>(
   {
     email: { type: String, maxLength: 250, unique: true, trim: true, required: true },
     sessions: {
@@ -50,4 +50,4 @@ const UserSchema = new Schema<IUser>(
 
 UserSchema.index({ 'sessions.expiresAt': 1 }, { expireAfterSeconds: 0 });
 
-export const UsersModel = model<IUser>('Users', UserSchema);
+export const UsersModel = model<User>('Users', UserSchema);

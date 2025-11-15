@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { Types } from 'mongoose';
 import { OrderStatuses } from '@utils/enums';
 
-export interface IOrder {
+export interface Order {
   user: Types.ObjectId | string;
   products: [Types.ObjectId | string];
   address: string;
@@ -10,7 +10,7 @@ export interface IOrder {
   status: OrderStatuses;
 }
 
-const OrderSchema = new Schema<IOrder>(
+const OrderSchema = new Schema<Order>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -43,4 +43,4 @@ const OrderSchema = new Schema<IOrder>(
   },
 );
 
-export const OrdersModel = model<IOrder>('Orders', OrderSchema);
+export const OrdersModel = model<Order>('Orders', OrderSchema);

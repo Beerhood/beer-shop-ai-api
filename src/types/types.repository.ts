@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/base.repository';
-import { IType, TypesModel } from '@common/models/';
+import { Type, TypesModel } from '@common/models/';
 
 @Injectable()
-export class TypesRepository extends BaseRepository<IType> {
+export class TypesRepository extends BaseRepository<Type> {
   constructor() {
     super(TypesModel);
   }

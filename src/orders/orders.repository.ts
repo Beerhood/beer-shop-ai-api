@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/base.repository';
-import { IOrder, OrdersModel } from '@common/models/';
+import { Order, OrdersModel } from '@common/models/';
 import { FilterQuery, SortOrder } from 'mongoose';
 
 @Injectable()
-export class OrdersRepository extends BaseRepository<IOrder> {
+export class OrdersRepository extends BaseRepository<Order> {
   constructor() {
     super(OrdersModel);
   }
 
   override find(
-    filter: FilterQuery<IOrder>,
+    filter: FilterQuery<Order>,
     sort?: Record<string, SortOrder>,
     limit?: number,
     skip?: number,
-    search?: FilterQuery<IOrder>,
+    search?: FilterQuery<Order>,
     projection?: NonNullable<unknown> | string | string[],
     options?: NonNullable<unknown>,
   ) {
@@ -22,7 +22,7 @@ export class OrdersRepository extends BaseRepository<IOrder> {
   }
 
   override findOne(
-    conditions: FilterQuery<IOrder>,
+    conditions: FilterQuery<Order>,
     projection?: object | string | string[],
     options?: object,
   ) {

@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { Types } from 'mongoose';
 import { ProductTypes } from '@utils/enums';
 
-export interface IProduct {
+export interface Product {
   name: string;
   image: string;
   description: string;
@@ -16,7 +16,7 @@ export interface IProduct {
   };
 }
 
-const ProductSchema = new Schema<IProduct>(
+const ProductSchema = new Schema<Product>(
   {
     name: { type: String, maxLength: 250, trim: true, required: true },
     image: { type: String, maxLength: 1000, trim: true, required: true },
@@ -50,4 +50,4 @@ const ProductSchema = new Schema<IProduct>(
   },
 );
 
-export const ProductsModel = model<IProduct>('Products', ProductSchema);
+export const ProductsModel = model<Product>('Products', ProductSchema);
