@@ -2,14 +2,22 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import * as Joi from 'joi';
-import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
+import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
+import { OrdersModule } from './orders/orders.module';
+import { AuthModule } from './auth/auth.module';
+import { TypesModule } from './types/types.module';
+import { AiModule } from './ai/ai.module';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
   isGlobal: true,
   validationSchema: Joi.object({
     PORT: Joi.number().default(3000),
+    NODE_ENV: Joi.string().required(),
+    CLIENT_URL: Joi.string().uri().required(),
+    DB_SRV: Joi.string().required(),
     GOOGLE_CLIENT_ID: Joi.string().required(),
     GOOGLE_CLIENT_SECRET: Joi.string().required(),
     GOOGLE_CALLBACK_URL: Joi.string().uri().required(),
@@ -21,8 +29,17 @@ const configModule = ConfigModule.forRoot({
 });
 
 @Module({
-  imports: [configModule, AuthModule, UsersModule],
   controllers: [],
   providers: [],
+  imports: [
+    configModule,
+    CommonModule,
+    AuthModule,
+    UsersModule,
+    ProductsModule,
+    OrdersModule,
+    TypesModule,
+    AiModule,
+  ],
 })
 export class AppModule {}

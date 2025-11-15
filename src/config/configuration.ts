@@ -1,5 +1,8 @@
 const configuration = () => ({
   port: Number.parseInt(process.env.PORT ?? '3000', 10) || 3000,
+  nodeEnv: process.env.NODE_ENV,
+  client: process.env.CLIENT_URL,
+  db_srv: process.env.DB_SRV,
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
