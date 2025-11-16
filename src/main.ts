@@ -8,6 +8,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
+  app.setGlobalPrefix('api');
+
   const config = new DocumentBuilder()
     .setTitle('Beerhood API')
     .setDescription('The Beerhood e-commerce platform API documentation')
