@@ -8,6 +8,9 @@ import { OrdersModule } from './orders/orders.module';
 import { AuthModule } from './auth/auth.module';
 import { TypesModule } from './types/types.module';
 import { AiModule } from './ai/ai.module';
+import { APP_PIPE } from '@nestjs/core';
+import { CleanUndefinedPipe } from '@common/pipes/clean-undefined.pipe';
+import { ParseQueryPipe } from '@common/pipes/parse-query.pipe';
 
 const configModule = ConfigModule.forRoot({
   load: [configuration],
@@ -29,7 +32,10 @@ const configModule = ConfigModule.forRoot({
 
 @Module({
   controllers: [],
-  providers: [],
+  providers: [
+    { provide: APP_PIPE, useClass: CleanUndefinedPipe },
+    { provide: APP_PIPE, useClass: ParseQueryPipe },
+  ],
   imports: [
     configModule,
     AuthModule,
