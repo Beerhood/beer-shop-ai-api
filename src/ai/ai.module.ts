@@ -13,6 +13,9 @@ import {
   INTENT_HANDLERS_TOKEN,
 } from './constants/ai.const';
 import { ChainAiProvider } from './provider/chain-ai.provider';
+import { GeneralKnowledgeHandler } from './handlers/general-knowledge.handler';
+import { SnackRecommendationHandler } from './handlers/snack-recommendation.handler';
+import { PairingRecommendationHandler } from './handlers/pairing-recommendation.handler';
 
 @Module({
   imports: [ProductsModule],
@@ -28,15 +31,27 @@ import { ChainAiProvider } from './provider/chain-ai.provider';
     },
     BeerRecommendationHandler,
     OffTopicHandler,
+    GeneralKnowledgeHandler,
+    SnackRecommendationHandler,
+    PairingRecommendationHandler,
     {
       provide: INTENT_HANDLERS_TOKEN,
       useFactory: (
         beerHandler: BeerRecommendationHandler,
         offTopicHandler: OffTopicHandler,
+        generalHandler: GeneralKnowledgeHandler,
+        snackHandler: SnackRecommendationHandler,
+        pairingHandler: PairingRecommendationHandler,
       ): IntentHandlerInterface[] => {
-        return [beerHandler, offTopicHandler];
+        return [beerHandler, offTopicHandler, generalHandler, snackHandler, pairingHandler];
       },
-      inject: [BeerRecommendationHandler, OffTopicHandler],
+      inject: [
+        BeerRecommendationHandler,
+        OffTopicHandler,
+        GeneralKnowledgeHandler,
+        SnackRecommendationHandler,
+        PairingRecommendationHandler,
+      ],
     },
     IntentHandlerFactory,
     AiService,

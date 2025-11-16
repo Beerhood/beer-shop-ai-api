@@ -1,4 +1,4 @@
-import { Product } from '../handlers/beer-recommendation.handler';
+import { Product } from 'src/products/products.service';
 import { BeerSearchCriteria } from '../handlers/beer-recommendation.handler';
 
 export const getBeerCriteriaPrompt = (userPrompt: string): string => `
@@ -6,9 +6,9 @@ You are a world-class beer sommelier expert working for an e-commerce platform. 
 
 Follow these steps:
 1.  Carefully read the user's request.
-2.  Identify all mentioned beer characteristics like style, country, strength (ABV), bitterness (IBU), and flavor notes.
-3.  Map these characteristics to the JSON schema provided below. Be logical: "міцне" (strong) implies a high 'minABV', "легке" (light) implies a low 'maxABV'.
-4.  Respond ONLY with a valid JSON object. If no specific criteria are mentioned for a field, OMIT the field entirely. Do not use null values.
+2.  Identify all mentioned beer characteristics like style, country, strength (ABV), bitterness (IBU), brand, and density (OG).
+3.  Map these characteristics to the JSON schema provided below. Be logical: "міцне" (strong) implies a high 'minABV', "легке" (light) implies a low 'maxABV', "щільне" (dense) implies a high 'OG'.
+4.  Respond ONLY with a valid JSON object. If no specific criteria are mentioned for a field, OMIT the field entirely. Do not use null or empty array values.
 
 **Schema:**
 {
@@ -18,7 +18,8 @@ Follow these steps:
   "maxABV": "number",
   "minIBU": "number",
   "maxIBU": "number",
-  "flavorProfile": ["string"]
+  "OG": "number",
+  "brand": ["string"]
 }
 
 ---
@@ -33,18 +34,25 @@ Follow these steps:
   "maxIBU": 40
 }
 
-**User request:** "хочу легкий світлий лагер з цитрусовими нотками"
+**User request:** "хочу легкий світлий лагер, можливо щось від Brewdog"
 **Your response:**
 {
   "style": ["Lager", "Pilsner"],
   "maxABV": 5.0,
-  "flavorProfile": ["citrus"]
+  "brand": ["Brewdog"]
 }
 
 **User request:** "є щось німецьке?"
 **Your response:**
 {
   "country": ["Germany"]
+}
+
+**User request:** "знайди мені щільний імперський стаут"
+**Your response:**
+{
+  "style": ["Imperial Stout"],
+  "OG": 1.075
 }
 ---
 

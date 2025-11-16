@@ -9,6 +9,8 @@ import {
   synthesizeSuccessResponsePrompt,
 } from '../prompts/beer-recommendation.prompts';
 import { AI_PROVIDER_TOKEN } from '../constants/ai.const';
+import { Product } from 'src/products/products.service';
+import { ProductTypes } from 'src/products/products.service';
 
 export interface BeerSearchCriteria {
   style?: string[];
@@ -18,30 +20,7 @@ export interface BeerSearchCriteria {
   minIBU?: number; // Гіркота
   maxIBU?: number;
   OG?: number; // Початкова густина
-  FG?: number; // Кінцева густина
   brand?: string[];
-}
-
-export interface Product {
-  name: string;
-  image: string;
-  description: string;
-  type: string;
-  price: number;
-  productType: ProductTypes;
-  details: {
-    style?: string; //
-    country?: string;
-    ABV?: number;
-    IBU?: number;
-    OG?: number;
-    brand?: string; //
-  };
-}
-
-export enum ProductTypes {
-  BEER = 'Beer',
-  SNACK = 'Snack',
 }
 
 @Injectable()
@@ -58,7 +37,11 @@ export class BeerRecommendationHandler implements IntentHandlerInterface {
 
   async handle(query: string): Promise<string> {
     const criteria = await this.getBeerCriteriaFromAi(query);
-    const foundProducts = await this.productsService.findRecommended(criteria, 'beer', 3);
+    const foundProducts = await this.productsService.findRecommended(
+      criteria,
+      ProductTypes.BEER,
+      3,
+    );
 
     if (foundProducts.length === 0) {
       return this.handleNotFound(query, criteria);
