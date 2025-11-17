@@ -1,5 +1,5 @@
 import { TransformOptionalToNumber } from '@common/decorators/transform/transform-optional-number';
-import { TransfromObjectValuesToNumber } from '@common/decorators/transform/transform-values-number';
+import { TransformObjectValuesToNumber } from '@common/decorators/transform/transform-values-number';
 import { IsObjectValuesIn } from '@common/decorators/validation/is-object-values-in';
 import { IsInt, IsObject, IsOptional, IsPositive } from 'class-validator';
 
@@ -23,7 +23,7 @@ export class FindQueryDto {
   @IsObjectValuesIn([1, -1])
   @IsObject()
   @IsOptional()
-  @TransfromObjectValuesToNumber()
+  @TransformObjectValuesToNumber()
   sort?: Record<string, unknown>;
 
   @IsObject()

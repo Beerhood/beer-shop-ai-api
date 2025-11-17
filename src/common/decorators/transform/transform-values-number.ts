@@ -6,7 +6,7 @@ import { Transform } from 'class-transformer';
  *
  * Leaves primitives, null, undefined, and non-object values unchanged (not recursively).
  */
-export function TransfromObjectValuesToNumber() {
+export function TransformObjectValuesToNumber() {
   return Transform(({ value }: { value: unknown }) => {
     if (
       value &&
