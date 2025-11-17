@@ -31,6 +31,18 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-argument': 'warn',
       'no-console': 'warn',
       'prefer-const': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
     },
   },
   eslintConfigPrettier,

@@ -87,7 +87,7 @@ export abstract class BaseRepository<T> {
    */
 
   find(
-    filter: FilterQuery<T>,
+    filter?: FilterQuery<T>,
     sort?: Record<string, SortOrder>,
     limit?: number,
     skip?: number,
