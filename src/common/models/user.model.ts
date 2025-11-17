@@ -3,13 +3,7 @@ import { UserRoles } from '@utils/enums';
 
 export interface User {
   email: string;
-  sessions: [
-    {
-      refreshToken: string;
-      createdAt: Date;
-      expiresAt: Date;
-    },
-  ];
+  refreshTokens: string[];
   firstName: string;
   lastName: string;
   role: UserRoles;
@@ -20,16 +14,7 @@ export interface User {
 const UserSchema = new Schema<User>(
   {
     email: { type: String, maxLength: 250, unique: true, trim: true, required: true },
-    sessions: {
-      type: [
-        {
-          refreshToken: { type: String, required: true },
-          createdAt: { type: Date, default: Date.now },
-          expiresAt: { type: Date, required: true, index: true },
-        },
-      ],
-      required: true,
-    },
+    refreshTokens: { type: [String], required: true },
     firstName: { type: String, maxLength: 250, trim: true, required: true },
     lastName: { type: String, maxLength: 250, trim: true, required: true },
     role: {
@@ -39,7 +24,7 @@ const UserSchema = new Schema<User>(
       trim: true,
       required: true,
     },
-    birthDate: { type: Date, maxLength: 30, required: true },
+    birthDate: { type: Date, required: true },
     address: { type: String, maxLength: 1000, trim: true, required: false },
   },
   {
