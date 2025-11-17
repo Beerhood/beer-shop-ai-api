@@ -7,7 +7,7 @@ import { BadRequestException, HttpStatus, ValidationPipe } from '@nestjs/common'
 import cookieParser from 'cookie-parser';
 import { getDBConnection } from '@utils/db';
 import { expandValidationError } from '@utils/errors/expand-validation-error';
-// import { CleanUndefinedPipe } from '@common/pipes/clean-undefined.pipe';
+import { CleanUndefinedPipe } from '@common/pipes/clean-undefined.pipe';
 import { ParseQueryPipe } from '@common/pipes/parse-query.pipe';
 
 async function bootstrap() {
@@ -30,7 +30,7 @@ async function bootstrap() {
     }),
   );
 
-  // app.useGlobalPipes(new CleanUndefinedPipe());
+  app.useGlobalPipes(new CleanUndefinedPipe());
 
   app.setGlobalPrefix('api');
 

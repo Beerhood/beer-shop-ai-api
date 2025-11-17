@@ -14,6 +14,14 @@ interface Query {
   search?: any;
 }
 
+/**
+ * Pipe that parses HTTP query parameters.
+ * Supports parsing JSON-like strings for `filter`, `sort`, and `search`,
+ * converting `search` values to regular expressions, and merging processed
+ * query fields back into the original query object.
+ *
+ * Only applies to parameters of type `"query"`.
+ */
 @Injectable()
 export class ParseQueryPipe implements PipeTransform {
   transform(value: unknown, metadata: ArgumentMetadata) {
@@ -48,7 +56,8 @@ export class ParseQueryPipe implements PipeTransform {
     if (
       typeof value === 'object' &&
       value !== null &&
-      !(value instanceof RegExp || value instanceof Array)
+      !(value instanceof RegExp) &&
+      !Array.isArray(value)
     ) {
       const obj: Record<string, any> = {};
       for (const key in value) {
