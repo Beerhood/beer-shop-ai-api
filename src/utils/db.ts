@@ -1,9 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import mongoose from 'mongoose';
-import { AppConfiguration } from 'src/config/configuration';
+import configuration from 'src/config/configuration';
 
 mongoose.Promise = global.Promise;
-const config = new ConfigService<AppConfiguration>();
+const config = new ConfigService(configuration());
 
 const nodeEnv = <string>config.get('nodeEnv');
 const srv = <string>config.get('db_srv');
