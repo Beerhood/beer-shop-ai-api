@@ -3,7 +3,7 @@ import { UserRoles } from '@utils/enums';
 
 export interface User {
   email: string;
-  refreshTokens: string[];
+  refreshToken?: string;
   firstName: string;
   lastName: string;
   role: UserRoles;
@@ -14,7 +14,7 @@ export interface User {
 const UserSchema = new Schema<User>(
   {
     email: { type: String, maxLength: 250, unique: true, trim: true, required: true },
-    refreshTokens: { type: [String], required: true },
+    refreshToken: { type: String, required: false },
     firstName: { type: String, maxLength: 250, trim: true, required: true },
     lastName: { type: String, maxLength: 250, trim: true, required: true },
     role: {
