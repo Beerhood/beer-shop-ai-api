@@ -1,4 +1,9 @@
 import {
+  BadRequestException,
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import mongoose, {
   ClientSessionOptions,
   CreateOptions,
   FilterQuery,
@@ -49,7 +54,11 @@ export abstract class BaseRepository<T> {
    * @returns {*}
    */
   createOne(doc: T) {
-    return this.model.create(doc);
+    try {
+      return this.model.create(doc);
+    } catch (err) {
+      return this.MongooseErrorHandle(err);
+    }
   }
 
   /**
@@ -60,7 +69,11 @@ export abstract class BaseRepository<T> {
    * @returns {*}
    */
   createMany(docs: T[], options?: CreateOptions) {
-    return this.model.create(docs, options);
+    try {
+      return this.model.create(docs, options);
+    } catch (err) {
+      return this.MongooseErrorHandle(err);
+    }
   }
 
   /**
@@ -108,7 +121,7 @@ export abstract class BaseRepository<T> {
    * @param {object} options
    * @returns {*}
    */
-  count(filter: FilterQuery<T>, search: FilterQuery<T>, options?: NonNullable<unknown>) {
+  count(filter?: FilterQuery<T>, search?: FilterQuery<T>, options?: NonNullable<unknown>) {
     return this.model.countDocuments({ ...filter, ...search }, options);
   }
 
@@ -145,7 +158,11 @@ export abstract class BaseRepository<T> {
    * @returns {*}
    */
   updateOne(filter: FilterQuery<T>, update: UpdateQuery<T> | object[], options?: object) {
-    return this.model.updateOne(filter, update, options);
+    try {
+      return this.model.updateOne(filter, update, options);
+    } catch (err) {
+      return this.MongooseErrorHandle(err);
+    }
   }
 
   /**
@@ -157,7 +174,11 @@ export abstract class BaseRepository<T> {
    * @returns {Promise<T | null>}
    */
   findByIdAndUpdate(id: string, update: UpdateQuery<T> | object[], options?: QueryOptions) {
-    return this.model.findByIdAndUpdate(id, update, { ...options, new: true });
+    try {
+      return this.model.findByIdAndUpdate(id, update, { ...options, new: true });
+    } catch (err) {
+      return this.MongooseErrorHandle(err);
+    }
   }
 
   /**
@@ -169,7 +190,11 @@ export abstract class BaseRepository<T> {
    * @returns {*}
    */
   updateMany(filter: FilterQuery<T>, update: UpdateQuery<T> | object[], options?: object) {
-    return this.model.updateMany(filter, update, options);
+    try {
+      return this.model.updateMany(filter, update, options);
+    } catch (err) {
+      return this.MongooseErrorHandle(err);
+    }
   }
 
   /**
@@ -193,15 +218,21 @@ export abstract class BaseRepository<T> {
   deleteMany(conditions: FilterQuery<T>, options?: object) {
     return this.model.deleteMany(conditions, options);
   }
-
-  /**
-   * Counts the number of documents that match conditions
-   * @param {object} [filter]
-   * @see {@link https://mongoosejs.com/docs/api/model.html#model_Model.countDocuments}
-   * @returns {*}
-   */
-  countDocuments(filter?: FilterQuery<T>) {
-    return this.model.countDocuments(filter);
+  MongooseErrorHandle(err: unknown): void {
+    if (err instanceof mongoose.Error) {
+      if (err instanceof mongoose.Error.ValidationError) {
+        for (const field in err.errors) {
+          const errorType = err.errors[field].kind;
+          switch (errorType) {
+            case 'NonexistentRelation':
+              throw new ConflictException(err.message);
+            default:
+              throw new BadRequestException(err.message);
+          }
+        }
+      }
+    }
+    throw new InternalServerErrorException(err);
   }
 }
 
