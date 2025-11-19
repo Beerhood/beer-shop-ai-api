@@ -1,6 +1,7 @@
 import mongoose, { Schema, model } from 'mongoose';
 import { Types } from 'mongoose';
 import { OrderStatuses } from '@utils/enums';
+import { NONEXISTENT_RELATION_ERROR } from '@utils/constants/db-errors';
 
 export interface Order {
   user: Types.ObjectId | string;
@@ -22,7 +23,7 @@ const OrderSchema = new Schema<Order>(
           const user: unknown = await mongoose.model('Users').findById(v);
           return !!user;
         },
-        type: 'NonexistentRelation',
+        type: NONEXISTENT_RELATION_ERROR,
         message: `Trying to set nonexistent User to order`,
       },
     },
@@ -36,7 +37,7 @@ const OrderSchema = new Schema<Order>(
           const product: unknown = await mongoose.model('Products').find({ _id: v });
           return !!product;
         },
-        type: 'NonexistentRelation',
+        type: NONEXISTENT_RELATION_ERROR,
         message: `Trying to set nonexistent Product to order`,
       },
     },
