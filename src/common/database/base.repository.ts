@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  ConflictException,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { BadRequestException, ConflictException } from '@nestjs/common';
 import mongoose, {
   ClientSessionOptions,
   CreateOptions,
@@ -232,7 +228,7 @@ export abstract class BaseRepository<T> {
         }
       }
     }
-    throw new InternalServerErrorException(err);
+    throw err;
   }
 }
 
