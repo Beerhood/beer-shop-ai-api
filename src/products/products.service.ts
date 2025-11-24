@@ -7,6 +7,8 @@ import { type SortOrder } from '@utils/constants/sort-order';
 import { TypesRepository } from 'src/types/types.repository';
 import { PRODUCT_ERROR_MESSAGES } from './constants/error-messages';
 import { ProductTypes } from '@utils/enums';
+import { GetAll } from '@utils/types/response.interface';
+import { Product } from '@common/models';
 
 @Injectable()
 export class ProductsService {
@@ -15,7 +17,7 @@ export class ProductsService {
     private readonly typesRepository: TypesRepository,
   ) {}
 
-  async findAll(query: FindQueryDto) {
+  async findAll(query: FindQueryDto): Promise<GetAll<Product>> {
     const products = await this.productsRepository.find(
       query.filter,
       query.sort as Record<string, SortOrder> | undefined,

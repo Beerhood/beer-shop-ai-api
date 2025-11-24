@@ -1,4 +1,5 @@
 import { ProductTypes } from '@utils/enums';
+import { getHandleDuplicateKeyError } from '@utils/mongodb/handle-unique';
 import { Schema, model } from 'mongoose';
 
 export interface Type {
@@ -21,5 +22,13 @@ const TypeSchema = new Schema<Type>(
     timestamps: true,
   },
 );
+
+const handleDuplicateKeyError = getHandleDuplicateKeyError<Type>('Type', 'name');
+
+TypeSchema.post('save', handleDuplicateKeyError);
+TypeSchema.post('findOneAndUpdate', handleDuplicateKeyError);
+TypeSchema.post('updateOne', handleDuplicateKeyError);
+TypeSchema.post('updateMany', handleDuplicateKeyError);
+TypeSchema.post('insertMany', handleDuplicateKeyError);
 
 export const TypesModel = model<Type>('Types', TypeSchema);

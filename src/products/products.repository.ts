@@ -70,6 +70,12 @@ export class ProductsRepository extends BaseRepository<Product> {
     const filter = createProductFilter(criteria, productType);
     return this.toObject(await this.find(filter, undefined, count));
   }
+
+  async findOneByCategory(categoryId: string) {
+    const product = await this.findOne({ type: categoryId });
+
+    return product ? this.toObject(product) : null;
+  }
 }
 
 // TODO : Remove after feat/ai-module merge
