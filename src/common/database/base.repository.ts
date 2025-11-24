@@ -2,6 +2,7 @@ import {
   ClientSessionOptions,
   CreateOptions,
   FilterQuery,
+  HydratedDocument,
   InsertManyOptions,
   Model,
   QueryOptions,
@@ -108,7 +109,7 @@ export abstract class BaseRepository<T> {
    * @param {object} options
    * @returns {*}
    */
-  count(filter: FilterQuery<T>, search: FilterQuery<T>, options?: NonNullable<unknown>) {
+  count(filter?: FilterQuery<T>, search?: FilterQuery<T>, options?: NonNullable<unknown>) {
     return this.model.countDocuments({ ...filter, ...search }, options);
   }
 
@@ -202,6 +203,18 @@ export abstract class BaseRepository<T> {
    */
   countDocuments(filter?: FilterQuery<T>) {
     return this.model.countDocuments(filter);
+  }
+
+  toObject(data: HydratedDocument<T>): T;
+  toObject(data: HydratedDocument<T>[]): T[];
+  toObject(data: HydratedDocument<T> | HydratedDocument<T>[] | null): T | T[] | null {
+    if (!data) return null;
+
+    if (Array.isArray(data)) {
+      return data.map((item) => this.toObject(item));
+    }
+
+    return data.toObject();
   }
 }
 

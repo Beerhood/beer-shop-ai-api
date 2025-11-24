@@ -15,10 +15,6 @@ import {
 } from 'class-validator';
 
 export class BeerDetailsDto {
-  @Length(1, 250)
-  @Trim()
-  country!: string;
-
   @Max(100)
   @Min(0)
   @IsNumber({ maxDecimalPlaces: 2 })
@@ -33,14 +29,22 @@ export class BeerDetailsDto {
   @Min(1.0)
   @IsNumber({ maxDecimalPlaces: 4 })
   OG!: number;
+
+  @Length(1, 100)
+  @Trim()
+  style!: string;
 }
 
-export class SnackDetailsDto {}
+export class SnackDetailsDto {
+  @Length(1, 100)
+  @Trim()
+  flavor!: string;
+}
 
 export class CreateProductDto {
   @Length(1, 250)
   @Trim()
-  name!: string;
+  title!: string;
 
   @IsUrl()
   @Length(1, 1000)
@@ -50,6 +54,14 @@ export class CreateProductDto {
   @Length(1, 3000)
   @Trim()
   description!: string;
+
+  @Length(1, 250)
+  @Trim()
+  brand!: string;
+
+  @Length(1, 250)
+  @Trim()
+  country!: string;
 
   @IsHexadecimal()
   @Length(24, 24)

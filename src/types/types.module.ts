@@ -6,6 +6,6 @@ import { TypesRepository } from './types.repository';
 @Module({
   controllers: [TypesController],
   providers: [TypesService, TypesRepository],
-  exports: [TypesRepository],
+  exports: [TypesService, TypesRepository],
 })
 export class TypesModule {}
