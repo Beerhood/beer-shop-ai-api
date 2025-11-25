@@ -43,6 +43,7 @@ export default tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
+      'no-warning-comments': ['warn', { terms: ['todo', 'fixme'], location: 'anywhere' }],
     },
   },
   eslintConfigPrettier,

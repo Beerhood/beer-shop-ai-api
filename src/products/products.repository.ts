@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '@common/database/base.repository';
 import { Product, ProductsModel } from '@common/models/';
 import { FilterQuery, SortOrder } from 'mongoose';
+import { ProductTypes } from '@utils/enums';
+import { createProductFilter } from './utils/mongodb/create-product-filter';
 
 @Injectable()
 export class ProductsRepository extends BaseRepository<Product> {
@@ -59,4 +61,41 @@ export class ProductsRepository extends BaseRepository<Product> {
   override findById(id: string, projection?: object | string | string[], options?: object) {
     return super.findById(id, projection, options).populate('type');
   }
+
+  async findByCriteria(
+    criteria: BeerSearchCriteria | SnackSearchCriteria,
+    productType: ProductTypes,
+    count: number,
+  ) {
+    const filter = createProductFilter(criteria, productType);
+    return this.toObject(await this.find(filter, undefined, count));
+  }
+
+  async findOneByCategory(categoryId: string) {
+    const product = await this.findOne({ type: categoryId });
+
+    return product ? this.toObject(product) : null;
+  }
+}
+
+// TODO : Remove after feat/ai-module merge
+interface BeerSearchCriteria {
+  country?: string[];
+  brand?: string[];
+  details?: {
+    style?: string[];
+    minABV?: number; // Міцність
+    maxABV?: number;
+    minIBU?: number; // Гіркота
+    maxIBU?: number;
+    OG?: number; // Початкова густина}
+  };
+}
+
+interface SnackSearchCriteria {
+  country?: string[];
+  brand?: string[];
+  details?: {
+    flavor?: string[];
+  };
 }

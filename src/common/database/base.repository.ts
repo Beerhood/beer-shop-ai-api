@@ -3,6 +3,7 @@ import mongoose, {
   ClientSessionOptions,
   CreateOptions,
   FilterQuery,
+  HydratedDocument,
   InsertManyOptions,
   Model,
   QueryOptions,
@@ -229,6 +230,18 @@ export abstract class BaseRepository<T> {
       }
     }
     throw err;
+  }
+
+  toObject(data: HydratedDocument<T>): T;
+  toObject(data: HydratedDocument<T>[]): T[];
+  toObject(data: HydratedDocument<T> | HydratedDocument<T>[] | null): T | T[] | null {
+    if (!data) return null;
+
+    if (Array.isArray(data)) {
+      return data.map((item) => this.toObject(item));
+    }
+
+    return data.toObject();
   }
 }
 

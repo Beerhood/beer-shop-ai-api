@@ -7,4 +7,8 @@ export class TypesRepository extends BaseRepository<Type> {
   constructor() {
     super(TypesModel);
   }
+
+  async deleteById(id: string) {
+    return (await this.deleteOne({ _id: id })).deletedCount;
+  }
 }
