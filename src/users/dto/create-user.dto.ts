@@ -1,5 +1,5 @@
 import { Trim } from '@common/decorators/transform/trim';
-import { IsDateString, IsEmail, Length } from 'class-validator';
+import { IsDateString, IsEmail, IsOptional, Length } from 'class-validator';
 
 export class CreateUserDto {
   @Length(1, 250)
@@ -15,9 +15,11 @@ export class CreateUserDto {
   lastName!: string;
 
   @IsDateString()
-  birthDate?: string;
+  @IsOptional()
+  birthDate?: Date;
 
   @Length(1, 1000)
+  @IsOptional()
   @Trim()
   address?: string;
 }
