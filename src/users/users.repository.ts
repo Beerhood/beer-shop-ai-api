@@ -7,4 +7,8 @@ export class UsersRepository extends BaseRepository<User> {
   constructor() {
     super(UsersModel);
   }
+
+  async findByEmail(email: string) {
+    return this.toObject(await this.findOne({ email }));
+  }
 }

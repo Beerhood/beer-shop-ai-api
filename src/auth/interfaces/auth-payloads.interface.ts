@@ -5,14 +5,14 @@ export interface GoogleUserPayload {
 }
 
 export interface JwtRefreshPayload {
-  sub: number;
+  sub: string;
   email: string;
   role: string;
   refreshToken: string;
 }
 
 export interface JwtPayload {
-  sub: number;
+  sub: string;
   email: string;
   role: string;
 }

@@ -14,6 +14,6 @@ export interface AuthLogoutRequest extends Request {
 }
 
 export interface RefreshTokensRequest {
-  userId: number;
+  userId: string;
   refreshToken: string;
 }
