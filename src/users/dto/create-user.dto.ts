@@ -1,6 +1,5 @@
 import { Trim } from '@common/decorators/transform/trim';
-import { UserRoles } from '@utils/enums';
-import { IsDateString, IsEmail, IsEnum, Length } from 'class-validator';
+import { IsDateString, IsEmail, Length } from 'class-validator';
 
 export class CreateUserDto {
   @Length(1, 250)
@@ -14,10 +13,6 @@ export class CreateUserDto {
   @Length(1, 250)
   @Trim()
   lastName!: string;
-
-  @IsEnum(UserRoles)
-  @Trim()
-  role!: UserRoles;
 
   @IsDateString()
   birthDate?: string;

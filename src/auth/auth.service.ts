@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { User } from '@common/models/';
-import { UsersServiceInterface } from 'src/users/interfaces/user-service.interface'; // PLACEHOLDER, NEED TO BE IMPLEMENTED IN FUTURE
+import { UsersServiceInterface } from 'src/users/interfaces/users-service.interface'; // PLACEHOLDER, NEED TO BE IMPLEMENTED IN FUTURE
 import { USER_SERVICE_TOKEN } from 'src/users/constants/user.const';
 import { AuthServiceInterface } from './interfaces/auth-service.interface';
 import { GoogleUserPayload, JwtPayload } from './interfaces/auth-payloads.interface';
