@@ -3,7 +3,7 @@ import { AiProviderInterface } from './ai-provider.interface';
 import { GROQ_AI_PROVIDER_TOKEN } from '../constants/ai.const';
 
 @Injectable()
-export class ChainAiProvider implements AiProviderInterface {
+export class ChainAiService implements AiProviderInterface {
   private readonly providers: AiProviderInterface[];
   constructor(
     @Inject(GROQ_AI_PROVIDER_TOKEN)

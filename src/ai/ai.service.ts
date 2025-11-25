@@ -5,13 +5,7 @@ import { AiAssistantResponse } from './interfaces/ai-assistant-response.interfac
 import { AiServiceInterface } from './interfaces/ai-service.interface';
 import { createIntentAnalysisPrompt } from './prompts/intent-analysis.prompt';
 import { IntentHandlerFactory } from './handlers/intent-handler.factory';
-
-export type Intent =
-  | 'BEER_RECOMMENDATION'
-  | 'SNACK_RECOMMENDATION'
-  | 'PAIRING_RECOMMENDATION'
-  | 'GENERAL_KNOWLEDGE'
-  | 'OFF_TOPIC';
+import { Intent } from './constants/ai.const';
 
 interface IntentAnalysisResponse {
   intent: Intent;

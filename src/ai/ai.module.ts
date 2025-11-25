@@ -12,7 +12,7 @@ import {
   GROQ_AI_PROVIDER_TOKEN,
   INTENT_HANDLERS_TOKEN,
 } from './constants/ai.const';
-import { ChainAiProvider } from './provider/chain-ai.provider';
+import { ChainAiService } from './provider/chain-ai.service';
 import { GeneralKnowledgeHandler } from './handlers/general-knowledge.handler';
 import { SnackRecommendationHandler } from './handlers/snack-recommendation.handler';
 import { PairingRecommendationHandler } from './handlers/pairing-recommendation.handler';
@@ -27,7 +27,7 @@ import { PairingRecommendationHandler } from './handlers/pairing-recommendation.
     },
     {
       provide: AI_PROVIDER_TOKEN,
-      useClass: ChainAiProvider,
+      useClass: ChainAiService,
     },
     BeerRecommendationHandler,
     OffTopicHandler,

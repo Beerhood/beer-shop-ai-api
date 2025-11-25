@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IntentHandlerInterface } from '../interfaces/intent-handler.interface';
-import { Intent } from '../ai.service';
+import { Intent } from '../constants/ai.const';
 import { ProductsService } from 'src/products/products.service';
 import { AiProviderInterface } from '../provider/ai-provider.interface';
 import {
@@ -42,11 +42,9 @@ export class BeerRecommendationHandler implements IntentHandlerInterface {
       ProductTypes.BEER,
       3,
     );
-
     if (foundProducts.length === 0) {
       return this.handleNotFound(query, criteria);
     }
-
     return this.synthesizeSuccessResponse(foundProducts, query);
   }
 

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IntentHandlerInterface } from '../interfaces/intent-handler.interface';
-import { Intent } from '../ai.service';
+import { Intent } from '../constants/ai.const';
 import { INTENT_HANDLERS_TOKEN } from '../constants/ai.const';
 
 @Injectable()

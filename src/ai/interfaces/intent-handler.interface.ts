@@ -1,4 +1,4 @@
-import { Intent } from '../ai.service';
+import { Intent } from '../constants/ai.const';
 
 export interface IntentHandlerInterface {
   canHandle(intent: Intent): boolean;
