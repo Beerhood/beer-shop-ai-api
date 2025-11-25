@@ -14,3 +14,6 @@ export const AUTH_ROOT_PATH = {
   REFRESH: 'refresh',
   LOGOUT: 'logout',
 };
+
+export const DEFAULT_USER_FIRST_NAME = 'Beer Lover';
+export const DEFAULT_USER_LAST_NAME = null;

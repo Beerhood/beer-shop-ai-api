@@ -30,7 +30,6 @@ export class UsersService implements UsersServiceInterface {
   }
 
   async update(id: string, user: UpdateUserDto & UserRefreshToken): Promise<User> {
-    console.log(id, user);
     const updatedUser = await this.usersRepository.findByIdAndUpdate(id, user);
     if (!updatedUser) throw new NotFoundException(USER_ERROR_MESSAGES.NOT_FOUND);
     return this.usersRepository.toObject(updatedUser);

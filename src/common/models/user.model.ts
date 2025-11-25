@@ -6,7 +6,7 @@ export interface User {
   email: string;
   refreshToken?: string | null;
   firstName: string;
-  lastName?: string;
+  lastName?: string | null;
   role: UserRoles;
   birthDate?: Date;
   address?: string;
