@@ -25,11 +25,25 @@ export default tseslint.config(
   },
   {
     rules: {
+      indent: 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
       'no-console': 'warn',
       'prefer-const': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+      'no-warning-comments': ['warn', { terms: ['todo', 'fixme'], location: 'anywhere' }],
     },
   },
   eslintConfigPrettier,
