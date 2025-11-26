@@ -1,7 +1,7 @@
 export interface GoogleUserPayload {
   email: string;
   firstName: string;
-  lastName: string;
+  lastName: string | null;
 }
 
 export interface JwtRefreshPayload {
