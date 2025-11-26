@@ -12,7 +12,7 @@ export interface JwtRefreshPayload {
 }
 
 export interface JwtPayload {
-  sub: number;
+  sub: string;
   email: string;
   role: string;
 }

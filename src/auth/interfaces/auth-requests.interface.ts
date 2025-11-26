@@ -13,6 +13,10 @@ export interface AuthLogoutRequest extends Request {
   user: JwtPayload;
 }
 
+export interface JwtPayloadRequest extends Request {
+  user: JwtPayload;
+}
+
 export interface RefreshTokensRequest {
   userId: number;
   refreshToken: string;
