@@ -1,18 +1,18 @@
 export interface GoogleUserPayload {
   email: string;
   firstName: string;
-  lastName: string;
+  lastName: string | null;
 }
 
 export interface JwtRefreshPayload {
-  sub: number;
+  sub: string;
   email: string;
   role: string;
   refreshToken: string;
 }
 
 export interface JwtPayload {
-  sub: number;
+  sub: string;
   email: string;
   role: string;
 }

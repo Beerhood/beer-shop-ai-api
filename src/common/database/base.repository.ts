@@ -215,7 +215,8 @@ export abstract class BaseRepository<T> {
   deleteMany(conditions: FilterQuery<T>, options?: object) {
     return this.model.deleteMany(conditions, options);
   }
-  MongooseErrorHandle(err: unknown): void {
+
+  MongooseErrorHandle(err: unknown): never {
     if (err instanceof mongoose.Error) {
       if (err instanceof mongoose.Error.ValidationError) {
         for (const field in err.errors) {
@@ -228,11 +229,13 @@ export abstract class BaseRepository<T> {
           }
         }
       }
+      throw err;
     }
     throw err;
   }
 
   toObject(data: HydratedDocument<T>): T;
+  toObject(data: HydratedDocument<T> | null): T | null;
   toObject(data: HydratedDocument<T>[]): T[];
   toObject(data: HydratedDocument<T> | HydratedDocument<T>[] | null): T | T[] | null {
     if (!data) return null;
@@ -240,7 +243,6 @@ export abstract class BaseRepository<T> {
     if (Array.isArray(data)) {
       return data.map((item) => this.toObject(item));
     }
-
     return data.toObject();
   }
 }
