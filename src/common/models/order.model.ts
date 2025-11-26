@@ -5,7 +5,7 @@ import { NONEXISTENT_RELATION_ERROR } from '@utils/constants/db-errors';
 
 export interface Order {
   user: Types.ObjectId | string;
-  products: [Types.ObjectId | string];
+  products: (Types.ObjectId | string)[];
   address: string;
   totalPrice: number;
   status: OrderStatuses;

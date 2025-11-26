@@ -59,4 +59,23 @@ export class OrdersRepository extends BaseRepository<Order> {
   override findById(id: string, projection?: object | string | string[], options?: object) {
     return super.findById(id, projection, options).populate('products');
   }
+
+  async findAllByUser(
+    userId: string,
+    filter?: FilterQuery<Order>,
+    sort?: Record<string, SortOrder>,
+    limit?: number,
+    skip?: number,
+    search?: FilterQuery<Order>,
+  ) {
+    return this.toObject(await this.find({ ...filter, user: userId }, sort, limit, skip, search));
+  }
+
+  async findByIdAndUser(id: string, userId: string) {
+    return this.toObject(await this.findOne({ _id: id, user: userId }));
+  }
+
+  async countByUser(userId: string, filter?: FilterQuery<Order>, search?: FilterQuery<Order>) {
+    return await this.count({ ...filter, user: userId }, search);
+  }
 }
