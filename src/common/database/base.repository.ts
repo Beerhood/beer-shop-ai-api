@@ -1,4 +1,5 @@
 import { BadRequestException, ConflictException } from '@nestjs/common';
+import { NONEXISTENT_RELATION_ERROR } from '@utils/constants/db-errors';
 import mongoose, {
   ClientSessionOptions,
   CreateOptions,
@@ -50,9 +51,9 @@ export abstract class BaseRepository<T> {
    * @see {@link https://mongoosejs.com/docs/api/model.html#model_Model.create}
    * @returns {*}
    */
-  createOne(doc: T) {
+  async createOne(doc: T) {
     try {
-      return this.model.create(doc);
+      return await this.model.create(doc);
     } catch (err) {
       return this.MongooseErrorHandle(err);
     }
@@ -215,13 +216,13 @@ export abstract class BaseRepository<T> {
   deleteMany(conditions: FilterQuery<T>, options?: object) {
     return this.model.deleteMany(conditions, options);
   }
-  MongooseErrorHandle(err: unknown): void {
+  MongooseErrorHandle(err: unknown): never {
     if (err instanceof mongoose.Error) {
       if (err instanceof mongoose.Error.ValidationError) {
         for (const field in err.errors) {
           const errorType = err.errors[field].kind;
           switch (errorType) {
-            case 'NonexistentRelation':
+            case NONEXISTENT_RELATION_ERROR:
               throw new ConflictException(err.message);
             default:
               throw new BadRequestException(err.message);
@@ -233,6 +234,7 @@ export abstract class BaseRepository<T> {
   }
 
   toObject(data: HydratedDocument<T>): T;
+  toObject(data: HydratedDocument<T> | null): T | null;
   toObject(data: HydratedDocument<T>[]): T[];
   toObject(data: HydratedDocument<T> | HydratedDocument<T>[] | null): T | T[] | null {
     if (!data) return null;

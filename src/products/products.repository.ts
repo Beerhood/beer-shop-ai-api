@@ -76,6 +76,10 @@ export class ProductsRepository extends BaseRepository<Product> {
 
     return product ? this.toObject(product) : null;
   }
+
+  async findByIds(ids: string[]) {
+    return this.toObject(await this.find({ _id: { $in: ids } }));
+  }
 }
 
 // TODO : Remove after feat/ai-module merge
