@@ -7,6 +7,8 @@ import {
   Inject,
   Post,
   UseInterceptors,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
@@ -56,6 +58,7 @@ export class AuthController implements AuthControllerInterface {
     });
   }
 
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post(AUTH_ROOT_PATH.LOGOUT)
   @UseGuards(AuthGuard(JWT_STRATEGY_NAME))
   async logout(
