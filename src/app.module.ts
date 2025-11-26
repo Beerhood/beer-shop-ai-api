@@ -27,6 +27,7 @@ const configModule = ConfigModule.forRoot({
     JWT_ACCESS_TOKEN_EXPIRES_IN: Joi.string().required(),
     JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
     JWT_REFRESH_TOKEN_EXPIRES_IN: Joi.string().required(),
+    GROQ_API_KEY: Joi.string().required(),
   }),
 });
 

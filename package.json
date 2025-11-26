@@ -41,6 +41,7 @@
     "dotenv": "^17.2.3",
     "joi": "^18.0.1",
     "mongoose": "^8.19.3",
+    "groq-sdk": "^0.35.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",

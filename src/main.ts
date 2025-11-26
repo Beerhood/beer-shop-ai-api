@@ -36,6 +36,8 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
+  app.setGlobalPrefix('api');
+
   const config = new DocumentBuilder()
     .setTitle('Beerhood API')
     .setDescription('The Beerhood e-commerce platform API documentation')

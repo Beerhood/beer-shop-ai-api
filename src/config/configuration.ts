@@ -14,6 +14,9 @@ const configuration = () => ({
     refreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET,
     refreshTokenExpiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
   },
+  groq: {
+    apiKey: process.env.GROQ_API_KEY,
+  },
 });
 
 export type AppConfiguration = ReturnType<typeof configuration>;
