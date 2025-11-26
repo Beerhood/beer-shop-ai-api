@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { type CreateProductDto } from './dto/create-product.dto';
 import { ProductsRepository } from './products.repository';
 import { type FindQueryDto } from '@common/dto/query/find-query.dto';
@@ -9,6 +14,7 @@ import { PRODUCT_ERROR_MESSAGES } from './constants/error-messages';
 import { ProductTypes } from '@utils/enums';
 import { GetAll } from '@utils/types/response.interface';
 import { Product } from '@common/models';
+import Decimal from 'decimal.js';
 
 @Injectable()
 export class ProductsService {
@@ -53,6 +59,18 @@ export class ProductsService {
     count: number,
   ) {
     return this.productsRepository.findByCriteria(criteria, productType, count);
+  }
+
+  async getTotalPrice(productIds: string[]): Promise<number> {
+    const products = await this.productsRepository.findByIds(productIds);
+    if (products.length !== productIds.length)
+      throw new ConflictException(PRODUCT_ERROR_MESSAGES.UNAVAILABLE_OR_INVALID);
+
+    const totalPriceDecimal = products.reduce((acc, product) => {
+      return acc.plus(new Decimal(product.price));
+    }, new Decimal(0));
+
+    return totalPriceDecimal.toDecimalPlaces(2).toNumber();
   }
 }
 

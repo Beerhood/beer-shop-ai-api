@@ -1,8 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { FindQueryDto } from '@common/dto/query/find-query.dto';
 import { CreateProductDto } from './dto/create-product.dto';
 import { IdMongoParamsDto } from '@common/dto/params/id-params.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { UserRoles } from '@utils/enums';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('products')
 export class ProductsController {
@@ -20,6 +24,8 @@ export class ProductsController {
   }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRoles.ADMIN)
   async create(@Body() product: CreateProductDto) {
     return await this.productsService.create(product);
   }
