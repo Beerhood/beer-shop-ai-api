@@ -1,13 +1,14 @@
 import { Schema, model } from 'mongoose';
 import { UserRoles } from '@utils/enums';
+import { getHandleDuplicateKeyError } from '@utils/mongodb/handle-unique';
 
 export interface User {
   email: string;
-  refreshToken?: string;
+  refreshToken?: string | null;
   firstName: string;
-  lastName: string;
+  lastName?: string | null;
   role: UserRoles;
-  birthDate: Date;
+  birthDate?: Date;
   address?: string;
 }
 
@@ -16,7 +17,7 @@ const UserSchema = new Schema<User>(
     email: { type: String, maxLength: 250, unique: true, trim: true, required: true },
     refreshToken: { type: String, required: false },
     firstName: { type: String, maxLength: 250, trim: true, required: true },
-    lastName: { type: String, maxLength: 250, trim: true, required: true },
+    lastName: { type: String, maxLength: 250, trim: true, required: false },
     role: {
       type: String,
       enum: Object.values(UserRoles),
@@ -24,7 +25,7 @@ const UserSchema = new Schema<User>(
       trim: true,
       required: true,
     },
-    birthDate: { type: Date, required: true },
+    birthDate: { type: Date, required: false },
     address: { type: String, maxLength: 1000, trim: true, required: false },
   },
   {
@@ -32,6 +33,14 @@ const UserSchema = new Schema<User>(
     timestamps: true,
   },
 );
+
+const handleDuplicateKeyError = getHandleDuplicateKeyError<User>('User', 'email');
+
+UserSchema.post('save', handleDuplicateKeyError);
+UserSchema.post('findOneAndUpdate', handleDuplicateKeyError);
+UserSchema.post('updateOne', handleDuplicateKeyError);
+UserSchema.post('updateMany', handleDuplicateKeyError);
+UserSchema.post('insertMany', handleDuplicateKeyError);
 
 UserSchema.index({ 'sessions.expiresAt': 1 }, { expireAfterSeconds: 0 });
 

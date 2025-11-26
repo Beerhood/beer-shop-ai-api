@@ -6,6 +6,8 @@ import { AppConfiguration } from 'src/config/configuration';
 import {
   GOOGLE_STRATEGY_NAME,
   EMAIL_NOT_PROVIDED_BY_GOOGLE_EXCEPTION,
+  DEFAULT_USER_FIRST_NAME,
+  DEFAULT_USER_LAST_NAME,
 } from '../constants/auth.const';
 import { GoogleUserPayload } from '../interfaces/auth-payloads.interface';
 
@@ -28,15 +30,30 @@ export class GoogleStrategy extends PassportStrategy(Strategy, GOOGLE_STRATEGY_N
     profile: Profile,
     done: VerifyCallback,
   ): void {
-    const { name, emails } = profile;
+    const { emails } = profile;
     if (!emails || emails.length === 0) {
       return done(new UnauthorizedException(EMAIL_NOT_PROVIDED_BY_GOOGLE_EXCEPTION), false);
     }
+    const email = emails[0].value;
+    const { firstName, lastName } = this.extractUserName(profile, email);
     const user: GoogleUserPayload = {
-      email: emails[0].value,
-      firstName: name?.givenName ?? 'Beer Bob',
-      lastName: name?.familyName ?? '',
+      email,
+      firstName,
+      lastName,
     };
     done(null, user);
+  }
+
+  private extractUserName(
+    profile: Profile,
+    email: string,
+  ): { firstName: string; lastName: string | null } {
+    const firstName =
+      profile.name?.givenName ||
+      profile.displayName ||
+      email.split('@')[0] ||
+      DEFAULT_USER_FIRST_NAME;
+    const lastName = profile.name?.familyName || DEFAULT_USER_LAST_NAME;
+    return { firstName, lastName };
   }
 }

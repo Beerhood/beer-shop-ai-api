@@ -229,6 +229,7 @@ export abstract class BaseRepository<T> {
           }
         }
       }
+      throw err;
     }
     throw err;
   }
@@ -242,7 +243,6 @@ export abstract class BaseRepository<T> {
     if (Array.isArray(data)) {
       return data.map((item) => this.toObject(item));
     }
-
     return data.toObject();
   }
 }

@@ -18,6 +18,6 @@ export interface JwtPayloadRequest extends Request {
 }
 
 export interface RefreshTokensRequest {
-  userId: number;
+  userId: string;
   refreshToken: string;
 }
