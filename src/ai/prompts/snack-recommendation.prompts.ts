@@ -1,4 +1,4 @@
-import { Product } from 'src/products/products.service';
+import { Product } from '@common/models';
 import { SnackSearchCriteria } from '../handlers/snack-recommendation.handler';
 
 export const getSnackCriteriaPrompt = (query: string): string => `
@@ -37,7 +37,7 @@ export const synthesizeSnackSuccessResponsePrompt = (
   products: Product[],
   query: string,
 ): string => {
-  const productInfo = products.map((p) => `- ${p.name}`).join('\n');
+  const productInfo = products.map((p) => `- ${p.title}`).join('\n');
   return `
     You are a friendly food expert, BeerBot.
     A user asked for a snack: "${query}".

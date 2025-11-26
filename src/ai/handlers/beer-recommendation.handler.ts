@@ -9,8 +9,8 @@ import {
   synthesizeSuccessResponsePrompt,
 } from '../prompts/beer-recommendation.prompts';
 import { AI_PROVIDER_TOKEN } from '../constants/ai.const';
-import { Product } from 'src/products/products.service';
-import { ProductTypes } from 'src/products/products.service';
+import { Product } from '@common/models';
+import { ProductTypes } from '@utils/enums';
 
 export interface BeerSearchCriteria {
   style?: string[];

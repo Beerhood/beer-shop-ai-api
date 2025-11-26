@@ -1,4 +1,4 @@
-import { Product } from 'src/products/products.service';
+import { Product } from '@common/models';
 import { BeerSearchCriteria } from '../handlers/beer-recommendation.handler';
 
 export const getBeerCriteriaPrompt = (userPrompt: string): string => `
@@ -64,7 +64,7 @@ Follow these steps:
 
 export const synthesizeSuccessResponsePrompt = (products: Product[], query: string): string => {
   const productInfo = products
-    .map((p) => `- ${p.name} (Стиль: ${p.details.style}, ABV: ${p.details.ABV}%)`)
+    .map((p) => `- ${p.title} (Стиль: ${p.details.style}, ABV: ${p.details.ABV}%)`)
     .join('\n');
 
   return `

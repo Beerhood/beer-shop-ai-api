@@ -1,4 +1,4 @@
-import { Product } from 'src/products/products.service';
+import { Product } from '@common/models';
 
 export const getPairingCriteriaPrompt = (query: string): string => `
 You are an expert sommelier. A user wants a beer and a snack pairing.
@@ -35,8 +35,8 @@ export const synthesizePairingSuccessResponsePrompt = (
 You are a friendly and knowledgeable beer sommelier, BeerBot.
 A user asked: "${query}".
 Based on their request, I have found a perfect pairing:
-- Beer: ${beer.name} (${beer.details.style})
-- Snack: ${snack.name}
+- Beer: ${beer.title} (${beer.details.style})
+- Snack: ${snack.title}
 
 Your task is to present this pairing to the user.
 Explain briefly why this beer and snack are a great match.
