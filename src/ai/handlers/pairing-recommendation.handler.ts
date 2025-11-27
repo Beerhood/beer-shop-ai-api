@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IntentHandlerInterface } from '../interfaces/intent-handler.interface';
 import { Intent } from '../constants/ai.const';
-import { ProductsService, ProductTypes } from 'src/products/products.service';
+import { ProductsService } from 'src/products/products.service';
+import { ProductTypes } from '@utils/enums';
 import { AiProviderInterface } from '../provider/ai-provider.interface';
 import { AI_PROVIDER_TOKEN } from '../constants/ai.const';
 import { getBeerCriteriaPrompt } from '../prompts/beer-recommendation.prompts';
@@ -50,7 +51,7 @@ export class PairingRecommendationHandler implements IntentHandlerInterface {
     );
 
     if (foundSnacks.length === 0) {
-      return `{"message": "Я знайшов для вас чудове пиво, ${beer.name}, але, на жаль, не зміг підібрати снек за запитом: ${pairingQuery.snackQuery}."}`;
+      return `{"message": "Я знайшов для вас чудове пиво, ${beer.title}, але, на жаль, не зміг підібрати снек за запитом: ${pairingQuery.snackQuery}."}`;
     }
     const snack = foundSnacks[0];
     const finalPrompt = synthesizePairingSuccessResponsePrompt(beer, snack, query);

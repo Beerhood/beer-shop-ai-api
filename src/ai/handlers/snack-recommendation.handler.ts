@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IntentHandlerInterface } from '../interfaces/intent-handler.interface';
 import { Intent } from '../constants/ai.const';
-import { ProductsService, ProductTypes } from 'src/products/products.service';
+import { ProductsService } from 'src/products/products.service';
+import { ProductTypes } from '@utils/enums';
 import { AiProviderInterface } from '../provider/ai-provider.interface';
 import { AI_PROVIDER_TOKEN } from '../constants/ai.const';
 import {
