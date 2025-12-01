@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { OrdersRepository } from './orders.repository';
 import { FindQueryDto } from '@common/dto/query/find-query.dto';
-import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateOrderDto, ProductInOrderDto } from './dto/create-order.dto';
 import { SortOrder } from '@utils/constants/sort-order';
 import { GetAll } from '@utils/types/response.interface';
 import { Order } from '@common/models';
@@ -43,16 +43,18 @@ export class OrdersService {
   }
 
   async create(order: CreateOrderDto, userId: string) {
-    const { expectedTotal, ...cleanOrder } = order;
+    const { expectedTotal, products, ...rest } = order;
+    const mergedProducts = this.mergeDuplicateProducts(products);
 
-    const totalPrice = await this.productsService.getTotalPrice(cleanOrder.products);
+    const totalPrice = await this.productsService.getTotalPrice(mergedProducts);
     if (expectedTotal && expectedTotal !== totalPrice)
       throw new ConflictException(ORDERS_ERROR_MESSAGES.TOTAL_PRICE_DISCREPANCY);
 
     try {
       return this.ordersRepository.toObject(
         await this.ordersRepository.createOne({
-          ...cleanOrder,
+          ...rest,
+          products: mergedProducts,
           user: userId,
           status: OrderStatuses.PENDING,
           totalPrice,
@@ -63,5 +65,19 @@ export class OrdersService {
         throw new UnauthorizedException(ORDERS_ERROR_MESSAGES.UNAUTHORIZED);
       throw err;
     }
+  }
+
+  private mergeDuplicateProducts(products: ProductInOrderDto[]): ProductInOrderDto[] {
+    const map = new Map<string, number>();
+
+    products.forEach((p) => {
+      const currentCount = map.get(p.item) || 0;
+      map.set(p.item, currentCount + p.count);
+    });
+
+    return Array.from(map.entries()).map(([item, count]) => ({
+      item,
+      count,
+    }));
   }
 }
