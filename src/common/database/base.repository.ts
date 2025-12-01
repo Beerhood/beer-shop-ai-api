@@ -55,7 +55,7 @@ export abstract class BaseRepository<T> {
     try {
       return await this.model.create(doc);
     } catch (err) {
-      return this.MongooseErrorHandle(err);
+      this.MongooseErrorHandle(err);
     }
   }
 
@@ -70,7 +70,7 @@ export abstract class BaseRepository<T> {
     try {
       return this.model.create(docs, options);
     } catch (err) {
-      return this.MongooseErrorHandle(err);
+      this.MongooseErrorHandle(err);
     }
   }
 
@@ -159,7 +159,7 @@ export abstract class BaseRepository<T> {
     try {
       return this.model.updateOne(filter, update, options);
     } catch (err) {
-      return this.MongooseErrorHandle(err);
+      this.MongooseErrorHandle(err);
     }
   }
 
@@ -175,7 +175,7 @@ export abstract class BaseRepository<T> {
     try {
       return this.model.findByIdAndUpdate(id, update, { ...options, new: true });
     } catch (err) {
-      return this.MongooseErrorHandle(err);
+      this.MongooseErrorHandle(err);
     }
   }
 
@@ -191,7 +191,7 @@ export abstract class BaseRepository<T> {
     try {
       return this.model.updateMany(filter, update, options);
     } catch (err) {
-      return this.MongooseErrorHandle(err);
+      this.MongooseErrorHandle(err);
     }
   }
 
@@ -229,9 +229,12 @@ export abstract class BaseRepository<T> {
           }
         }
       }
+      throw new BadRequestException(err.message);
+    }
+    if (err instanceof Error) {
       throw err;
     }
-    throw err;
+    throw new Error(String(err));
   }
 
   toObject(data: HydratedDocument<T>): T;
