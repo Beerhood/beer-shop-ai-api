@@ -8,7 +8,7 @@ export class OffTopicHandler implements IntentHandlerInterface {
     return intent === 'OFF_TOPIC';
   }
 
-  /*eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/require-await*/
+  /*eslint-disable-next-line @typescript-eslint/require-await*/
   async handle(_query: string): Promise<string> {
     return 'WFT BRO!';
   }
