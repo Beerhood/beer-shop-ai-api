@@ -10,11 +10,15 @@ import { type FindQueryDto } from '@common/dto/query/find-query.dto';
 import { ERROR_MESSAGES } from '@utils/errors/error-messages';
 import { type SortOrder } from '@utils/constants/sort-order';
 import { TypesRepository } from 'src/types/types.repository';
-import { PRODUCT_ERROR_MESSAGES } from './constants/error-messages';
+import {
+  getIntegrityTotalPriceErrorMessage,
+  PRODUCT_ERROR_MESSAGES,
+} from './constants/error-messages';
 import { ProductTypes } from '@utils/enums';
 import { GetAll } from '@utils/types/response.interface';
 import { Product } from '@common/models';
 import Decimal from 'decimal.js';
+import { ProductInOrderDto } from 'src/orders/dto/create-order.dto';
 
 @Injectable()
 export class ProductsService {
@@ -61,13 +65,27 @@ export class ProductsService {
     return this.productsRepository.findByCriteria(criteria, productType, count);
   }
 
-  async getTotalPrice(productIds: string[]): Promise<number> {
+  async getTotalPrice(productsInOrder: ProductInOrderDto[]): Promise<number> {
+    const quantityMap = new Map<string, number>();
+
+    productsInOrder.forEach((p) => {
+      const currentCount = quantityMap.get(p.item) || 0;
+      quantityMap.set(p.item, currentCount + p.count);
+    });
+
+    const productIds = Array.from(quantityMap.keys());
+
     const products = await this.productsRepository.findByIds(productIds);
     if (products.length !== productIds.length)
       throw new ConflictException(PRODUCT_ERROR_MESSAGES.UNAVAILABLE_OR_INVALID);
 
     const totalPriceDecimal = products.reduce((acc, product) => {
-      return acc.plus(new Decimal(product.price));
+      // TODO: fix typing
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const productId = ((product as any)._id as string).toString();
+      const count = quantityMap.get(productId);
+      if (count === undefined) throw new Error(getIntegrityTotalPriceErrorMessage(productId));
+      return acc.plus(new Decimal(product.price).times(count));
     }, new Decimal(0));
 
     return totalPriceDecimal.toDecimalPlaces(2).toNumber();

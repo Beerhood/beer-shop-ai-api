@@ -10,7 +10,7 @@ fi
 echo "Successfully."
 
 echo "Linting project..."
-npm run lint:check
+npm run lint
 echo "Successfully."
 
 echo "Typescript typecheck (no emit)..."
