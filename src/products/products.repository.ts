@@ -4,6 +4,8 @@ import { Product, ProductsModel } from '@common/models/';
 import { FilterQuery, SortOrder } from 'mongoose';
 import { ProductTypes } from '@utils/enums';
 import { createProductFilter } from './utils/mongodb/create-product-filter';
+import { BeerSearchCriteria } from 'src/ai/handlers/beer-recommendation.handler';
+import { SnackSearchCriteria } from 'src/ai/handlers/snack-recommendation.handler';
 
 @Injectable()
 export class ProductsRepository extends BaseRepository<Product> {
@@ -80,26 +82,4 @@ export class ProductsRepository extends BaseRepository<Product> {
   async findByIds(ids: string[]) {
     return this.toObject(await this.find({ _id: { $in: ids } }));
   }
-}
-
-// TODO : Remove after feat/ai-module merge
-interface BeerSearchCriteria {
-  country?: string[];
-  brand?: string[];
-  details?: {
-    style?: string[];
-    minABV?: number; // Міцність
-    maxABV?: number;
-    minIBU?: number; // Гіркота
-    maxIBU?: number;
-    OG?: number; // Початкова густина}
-  };
-}
-
-interface SnackSearchCriteria {
-  country?: string[];
-  brand?: string[];
-  details?: {
-    flavor?: string[];
-  };
 }

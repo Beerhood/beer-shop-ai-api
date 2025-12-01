@@ -1,5 +1,12 @@
 import { Trim } from '@common/decorators/transform/trim';
-import { IsDateString, IsEmail, IsOptional, Length } from 'class-validator';
+import { IsDateNotInFuture } from '@common/decorators/validation/is-date-not-future';
+import {
+  DATE_INVALID_FORMAT_MESSAGE,
+  DATE_MAX_CONSTRAINT_MESSAGE,
+  DATE_MIN_CONSTRAINT_MESSAGE,
+} from '@utils/constants/validation/validation-messages';
+import { Type } from 'class-transformer';
+import { IsDate, IsEmail, IsOptional, Length, MinDate } from 'class-validator';
 
 export class CreateUserDto {
   @Length(1, 250)
@@ -11,15 +18,19 @@ export class CreateUserDto {
   firstName!: string;
 
   @Length(1, 250)
-  @Trim()
-  lastName!: string;
-
-  @IsDateString()
   @IsOptional()
-  birthDate?: Date;
+  @Trim()
+  lastName?: string | null;
+
+  @IsDateNotInFuture({ message: DATE_MAX_CONSTRAINT_MESSAGE })
+  @MinDate(new Date('1900-01-01'), { message: DATE_MIN_CONSTRAINT_MESSAGE })
+  @IsDate({ message: DATE_INVALID_FORMAT_MESSAGE })
+  @IsOptional()
+  @Type(() => Date)
+  birthDate?: Date | null;
 
   @Length(1, 1000)
   @IsOptional()
   @Trim()
-  address?: string;
+  address?: string | null;
 }

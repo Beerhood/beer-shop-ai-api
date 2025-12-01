@@ -8,8 +8,8 @@ export interface User {
   firstName: string;
   lastName?: string | null;
   role: UserRoles;
-  birthDate?: Date;
-  address?: string;
+  birthDate?: Date | null;
+  address?: string | null;
 }
 
 const UserSchema = new Schema<User>(

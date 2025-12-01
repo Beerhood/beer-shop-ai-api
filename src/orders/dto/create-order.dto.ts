@@ -26,5 +26,5 @@ export class CreateOrderDto {
   @IsPositive()
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsOptional()
-  expectedTotal?: number;
+  expectedTotal?: number | null;
 }

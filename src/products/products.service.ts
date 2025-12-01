@@ -15,6 +15,8 @@ import { ProductTypes } from '@utils/enums';
 import { GetAll } from '@utils/types/response.interface';
 import { Product } from '@common/models';
 import Decimal from 'decimal.js';
+import { BeerSearchCriteria } from 'src/ai/handlers/beer-recommendation.handler';
+import { SnackSearchCriteria } from 'src/ai/handlers/snack-recommendation.handler';
 
 @Injectable()
 export class ProductsService {
@@ -72,26 +74,4 @@ export class ProductsService {
 
     return totalPriceDecimal.toDecimalPlaces(2).toNumber();
   }
-}
-
-// TODO : Remove after feat/ai-module merge
-interface BeerSearchCriteria {
-  country?: string[];
-  brand?: string[];
-  details?: {
-    style?: string[];
-    minABV?: number; // Міцність
-    maxABV?: number;
-    minIBU?: number; // Гіркота
-    maxIBU?: number;
-    OG?: number; // Початкова густина}
-  };
-}
-
-interface SnackSearchCriteria {
-  country?: string[];
-  brand?: string[];
-  details?: {
-    flavor?: string[];
-  };
 }
