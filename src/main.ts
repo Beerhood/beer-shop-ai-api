@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import cors from 'cors';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -9,6 +10,11 @@ import { getDBConnection } from '@utils/db';
 import { expandValidationError } from '@utils/errors/expand-validation-error';
 import { CleanUndefinedPipe } from '@common/pipes/clean-undefined.pipe';
 import { ParseQueryPipe } from '@common/pipes/parse-query.pipe';
+import { ConfigService } from '@nestjs/config';
+import configuration from './config/configuration';
+
+const config = new ConfigService(configuration());
+const client = <string>config.get('client');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -34,9 +40,9 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
-  app.use(cookieParser());
+  app.use(cors({ origin: client, credentials: true }));
 
-  app.setGlobalPrefix('api');
+  app.use(cookieParser());
 
   const config = new DocumentBuilder()
     .setTitle('Beerhood API')
