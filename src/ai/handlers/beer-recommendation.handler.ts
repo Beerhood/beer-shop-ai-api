@@ -13,14 +13,16 @@ import { Product } from '@common/models';
 import { ProductTypes } from '@utils/enums';
 
 export interface BeerSearchCriteria {
-  style?: string[];
   country?: string[];
-  minABV?: number; // Міцність
-  maxABV?: number;
-  minIBU?: number; // Гіркота
-  maxIBU?: number;
-  OG?: number; // Початкова густина
   brand?: string[];
+  details?: {
+    style?: string[];
+    minABV?: number; // Міцність
+    maxABV?: number;
+    minIBU?: number; // Гіркота
+    maxIBU?: number;
+    OG?: number; // Початкова густина}
+  };
 }
 
 @Injectable()

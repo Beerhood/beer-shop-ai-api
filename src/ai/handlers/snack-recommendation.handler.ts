@@ -12,9 +12,11 @@ import {
 } from '../prompts/snack-recommendation.prompts';
 
 export interface SnackSearchCriteria {
-  style?: string[];
   country?: string[];
   brand?: string[];
+  details?: {
+    flavor?: string[];
+  };
 }
 
 @Injectable()
