@@ -11,8 +11,10 @@ import { AiModule } from './ai/ai.module';
 import { APP_PIPE } from '@nestjs/core';
 import { CleanUndefinedPipe } from '@common/pipes/clean-undefined.pipe';
 import { ParseQueryPipe } from '@common/pipes/parse-query.pipe';
+import { ENV_FILES, ENVIRONMENT } from '@utils/constants/env';
 
 const configModule = ConfigModule.forRoot({
+  envFilePath: process.env.NODE_ENV === ENVIRONMENT.TEST ? ENV_FILES.TEST : ENV_FILES.ENV,
   load: [configuration],
   isGlobal: true,
   validationSchema: Joi.object({

@@ -1,27 +1,26 @@
-import { ConfigService } from '@nestjs/config';
 import mongoose from 'mongoose';
-import configuration from 'src/config/configuration';
+import { ENVIRONMENT } from './constants/env';
 
 mongoose.Promise = global.Promise;
-const config = new ConfigService(configuration());
 
-const nodeEnv = <string>config.get('nodeEnv');
-const srv = <string>config.get('db_srv');
-
-export async function getDBConnection() {
+export async function getDBConnection(srv: string, nodeEnv: string) {
   const options = {
     serverSelectionTimeoutMS: 1000,
   };
 
-  if (nodeEnv !== 'production') {
+  if (nodeEnv !== ENVIRONMENT.PRODUCTION) {
     mongoose.set('debug', true);
   }
 
-  mongoose.connection.on('connected', () => console.log('Mongoose connection is CONNECTED'));
-  mongoose.connection.on('error', (err: Error) =>
-    console.error('Mongoose connection error:', err.message),
-  );
-  mongoose.connection.on('disconnected', () => console.log('Mongoose connection is DISCONNECTED'));
+  mongoose.connection.on('connected', () => {
+    console.log('Mongoose connection is CONNECTED');
+  });
+  mongoose.connection.on('error', (err: Error) => {
+    console.error('Mongoose connection error:', err.message);
+  });
+  mongoose.connection.on('disconnected', () => {
+    console.log('Mongoose connection is DISCONNECTED');
+  });
 
   await mongoose.connect(srv, options);
 }
