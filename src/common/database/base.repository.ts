@@ -66,9 +66,9 @@ export abstract class BaseRepository<T> {
    * @see {@link https://mongoosejs.com/docs/api/model.html#model_Model.create}
    * @returns {*}
    */
-  createMany(docs: T[], options?: CreateOptions) {
+  async createMany(docs: T[], options?: CreateOptions) {
     try {
-      return this.model.create(docs, options);
+      return await this.model.create(docs, options);
     } catch (err) {
       this.MongooseErrorHandle(err);
     }
@@ -216,6 +216,7 @@ export abstract class BaseRepository<T> {
   deleteMany(conditions: FilterQuery<T>, options?: object) {
     return this.model.deleteMany(conditions, options);
   }
+
   MongooseErrorHandle(err: unknown): never {
     if (err instanceof mongoose.Error) {
       if (err instanceof mongoose.Error.ValidationError) {

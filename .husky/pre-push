@@ -18,6 +18,6 @@ npm run typecheck
 echo "Successfully."
 
 echo "Testing..."
-npm run test:test
+npm run test:unit
 echo "Successfully."
 
