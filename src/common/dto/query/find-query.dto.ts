@@ -1,16 +1,16 @@
 import { TransformOptionalToNumber } from '@common/decorators/transform/transform-optional-number';
 import { TransformObjectValuesToNumber } from '@common/decorators/transform/transform-values-number';
 import { IsObjectValuesIn } from '@common/decorators/validation/is-object-values-in';
-import { IsInt, IsObject, IsOptional, IsPositive } from 'class-validator';
+import { IsInt, IsObject, IsOptional, Min } from 'class-validator';
 
 export class FindQueryDto {
-  @IsPositive()
+  @Min(0)
   @IsInt()
   @IsOptional()
   @TransformOptionalToNumber()
   limit?: number;
 
-  @IsPositive()
+  @Min(0)
   @IsInt()
   @IsOptional()
   @TransformOptionalToNumber()
