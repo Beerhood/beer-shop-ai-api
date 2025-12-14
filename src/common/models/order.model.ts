@@ -2,6 +2,7 @@ import mongoose, { Schema, model } from 'mongoose';
 import { Types } from 'mongoose';
 import { OrderStatuses } from '@utils/enums';
 import { NONEXISTENT_RELATION_ERROR } from '@utils/constants/db-errors';
+import { ORDERS } from '@utils/constants/db-entity-names';
 
 interface ProductInOrder {
   item: Types.ObjectId | string;
@@ -67,4 +68,4 @@ const OrderSchema = new Schema<Order>(
   },
 );
 
-export const OrdersModel = model<Order>('Orders', OrderSchema);
+export const OrdersModel = model<Order>(ORDERS, OrderSchema);

@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
-import * as Joi from 'joi';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { OrdersModule } from './orders/orders.module';
@@ -12,25 +11,13 @@ import { APP_PIPE } from '@nestjs/core';
 import { CleanUndefinedPipe } from '@common/pipes/clean-undefined.pipe';
 import { ParseQueryPipe } from '@common/pipes/parse-query.pipe';
 import { ENV_FILES, ENVIRONMENT } from '@utils/constants/env';
+import { envValidationSchema } from './config/env.schema';
 
 const configModule = ConfigModule.forRoot({
   envFilePath: process.env.NODE_ENV === ENVIRONMENT.TEST ? ENV_FILES.TEST : ENV_FILES.ENV,
   load: [configuration],
   isGlobal: true,
-  validationSchema: Joi.object({
-    PORT: Joi.number().default(3000),
-    NODE_ENV: Joi.string().required(),
-    CLIENT_URL: Joi.string().uri().required(),
-    DB_SRV: Joi.string().required(),
-    GOOGLE_CLIENT_ID: Joi.string().required(),
-    GOOGLE_CLIENT_SECRET: Joi.string().required(),
-    GOOGLE_CALLBACK_URL: Joi.string().uri().required(),
-    JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
-    JWT_ACCESS_TOKEN_EXPIRES_IN: Joi.string().required(),
-    JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
-    JWT_REFRESH_TOKEN_EXPIRES_IN: Joi.string().required(),
-    GROQ_API_KEY: Joi.string().required(),
-  }),
+  validationSchema: envValidationSchema,
 });
 
 @Module({

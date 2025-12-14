@@ -22,5 +22,5 @@ export async function getDBConnection(srv: string, nodeEnv: string) {
     console.log('Mongoose connection is DISCONNECTED');
   });
 
-  await mongoose.connect(srv, options);
+  return await mongoose.connect(srv, options);
 }
