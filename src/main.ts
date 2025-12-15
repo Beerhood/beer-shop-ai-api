@@ -2,13 +2,13 @@ import cors from 'cors';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { BadRequestException, HttpStatus, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import { getDBConnection } from '@utils/db';
-import { expandValidationError } from '@utils/errors/expand-validation-error';
 import { CleanUndefinedPipe } from '@common/pipes/clean-undefined.pipe';
 import { ParseQueryPipe } from '@common/pipes/parse-query.pipe';
 import { ConfigService } from '@nestjs/config';
+import { validationPipeConfig } from './config/validation-pipe.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,20 +18,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ParseQueryPipe());
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-      exceptionFactory: (errors) => {
-        throw new BadRequestException({
-          error: 'Validation Error',
-          statusCode: HttpStatus.BAD_REQUEST,
-          details: errors.map(expandValidationError),
-        });
-      },
-    }),
-  );
+  app.useGlobalPipes(new ValidationPipe(validationPipeConfig));
 
   app.useGlobalPipes(new CleanUndefinedPipe());
 
