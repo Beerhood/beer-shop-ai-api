@@ -12,14 +12,14 @@ import { PRODUCTS, TYPES } from '@utils/constants/db-entity-names';
 import { ProductTypes } from '@utils/enums';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 
-type LeanType = Type & { _id: Types.ObjectId };
+type TypeDoc = Type & { _id: Types.ObjectId };
 
-describe('Product integration', () => {
+describe('Products integration', () => {
   let connection: Connection;
   let productsController: ProductsController;
   let productModel: Model<Product>;
   let typeModel: Model<Type>;
-  let typesDoc: LeanType[];
+  let typesDoc: TypeDoc[];
 
   const types: Type[] = [
     {

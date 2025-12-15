@@ -8,7 +8,7 @@ export async function getDBConnection(srv: string, nodeEnv: string) {
     serverSelectionTimeoutMS: 1000,
   };
 
-  if (nodeEnv !== ENVIRONMENT.PRODUCTION) {
+  if (![ENVIRONMENT.PRODUCTION as string, ENVIRONMENT.TEST as string].includes(nodeEnv)) {
     mongoose.set('debug', true);
   }
 

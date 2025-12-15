@@ -4,7 +4,7 @@ import { OrderStatuses } from '@utils/enums';
 import { NONEXISTENT_RELATION_ERROR } from '@utils/constants/db-errors';
 import { ORDERS } from '@utils/constants/db-entity-names';
 
-interface ProductInOrder {
+export interface ProductInOrder {
   item: Types.ObjectId | string;
   count: number;
 }
