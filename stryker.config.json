@@ -5,5 +5,12 @@
   "reporters": ["html", "clear-text", "progress"],
   "testRunner": "jest",
   "testRunner_comment": "Take a look at https://stryker-mutator.io/docs/stryker-js/jest-runner for information about the jest plugin.",
-  "coverageAnalysis": "perTest"
+  "coverageAnalysis": "perTest",
+  "tsconfigFile": "tsconfig.json",
+  "mutate": ["src/products/products.service.ts"],
+  "jest": {
+    "configFile": "jest-int.json",
+    "enableFindRelatedTests": false
+  },
+  "tempDirName": "stryker-tmp"
 }
