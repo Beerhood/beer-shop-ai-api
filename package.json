@@ -18,11 +18,12 @@
     "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "test": "jest",
     "test:unit": "jest",
+    "test:int": " cross-env NODE_ENV=test jest --config jest-int.json --runInBand",
     "test:test": "node -e \"process.exit(0)\"",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --runInBand",
     "prepare": "husky"
   },
   "dependencies": {
@@ -66,6 +67,7 @@
     "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^8.46.0",
     "@typescript-eslint/parser": "^8.46.0",
+    "cross-env": "^10.1.0",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
@@ -88,7 +90,7 @@
     "*.{ts,mts,cts,tsx,js,mjs,cjs,jsx}": [
       "prettier -w",
       "eslint",
-      "npm run test:unit -- --bail --findRelatedTests"
+      "npm run test:unit -- --bail --findRelatedTests --passWithNoTests"
     ],
     "*.{json,md,yml,yaml,css,scss,html}": "prettier -w"
   },

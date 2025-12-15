@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import cors from 'cors';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -11,13 +9,12 @@ import { expandValidationError } from '@utils/errors/expand-validation-error';
 import { CleanUndefinedPipe } from '@common/pipes/clean-undefined.pipe';
 import { ParseQueryPipe } from '@common/pipes/parse-query.pipe';
 import { ConfigService } from '@nestjs/config';
-import configuration from './config/configuration';
-
-const config = new ConfigService(configuration());
-const client = <string>config.get('client');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const configService = app.get(ConfigService);
+  const client = configService.getOrThrow<string>('client');
 
   app.useGlobalPipes(new ParseQueryPipe());
 
@@ -54,9 +51,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
-  await app.listen(process.env.PORT ?? 3000);
+  const srv = configService.getOrThrow<string>('db_srv');
+  const nodeEnv = configService.getOrThrow<string>('nodeEnv');
 
-  await getDBConnection();
+  await getDBConnection(srv, nodeEnv);
+
+  await app.listen(process.env.PORT ?? 3000);
 }
 
 bootstrap().catch(() => {

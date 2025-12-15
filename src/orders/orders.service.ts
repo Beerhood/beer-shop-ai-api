@@ -47,7 +47,7 @@ export class OrdersService {
     const mergedProducts = this.mergeDuplicateProducts(products);
 
     const totalPrice = await this.productsService.getTotalPrice(mergedProducts);
-    if (expectedTotal && expectedTotal !== totalPrice)
+    if (expectedTotal !== null && expectedTotal !== undefined && expectedTotal !== totalPrice)
       throw new ConflictException(ORDERS_ERROR_MESSAGES.TOTAL_PRICE_DISCREPANCY);
 
     try {
