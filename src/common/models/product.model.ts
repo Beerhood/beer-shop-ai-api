@@ -2,6 +2,7 @@ import mongoose, { Schema, model } from 'mongoose';
 import { Types } from 'mongoose';
 import { ProductTypes } from '@utils/enums';
 import { NONEXISTENT_RELATION_ERROR } from '@utils/constants/db-errors';
+import { PRODUCTS } from '@utils/constants/db-entity-names';
 
 export interface Product {
   title: string;
@@ -64,4 +65,4 @@ const ProductSchema = new Schema<Product>(
   },
 );
 
-export const ProductsModel = model<Product>('Products', ProductSchema);
+export const ProductsModel = model<Product>(PRODUCTS, ProductSchema);

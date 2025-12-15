@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { UserRoles } from '@utils/enums';
 import { getHandleDuplicateKeyError } from '@utils/mongodb/handle-unique';
+import { USERS } from '@utils/constants/db-entity-names';
 
 export interface User {
   email: string;
@@ -44,4 +45,4 @@ UserSchema.post('insertMany', handleDuplicateKeyError);
 
 UserSchema.index({ 'sessions.expiresAt': 1 }, { expireAfterSeconds: 0 });
 
-export const UsersModel = model<User>('Users', UserSchema);
+export const UsersModel = model<User>(USERS, UserSchema);

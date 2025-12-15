@@ -1,3 +1,4 @@
+import { TYPES } from '@utils/constants/db-entity-names';
 import { ProductTypes } from '@utils/enums';
 import { getHandleDuplicateKeyError } from '@utils/mongodb/handle-unique';
 import { Schema, model } from 'mongoose';
@@ -31,4 +32,4 @@ TypeSchema.post('updateOne', handleDuplicateKeyError);
 TypeSchema.post('updateMany', handleDuplicateKeyError);
 TypeSchema.post('insertMany', handleDuplicateKeyError);
 
-export const TypesModel = model<Type>('Types', TypeSchema);
+export const TypesModel = model<Type>(TYPES, TypeSchema);
