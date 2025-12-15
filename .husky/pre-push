@@ -19,5 +19,6 @@ echo "Successfully."
 
 echo "Testing..."
 npm run test:unit
+npm run test:int
 echo "Successfully."
 

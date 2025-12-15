@@ -1,5 +1,4 @@
 import { Connection, Model, Types } from 'mongoose';
-import { ProductsController } from './products.controller';
 import { Test } from '@nestjs/testing';
 import { ProductsModule } from './products.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -11,12 +10,15 @@ import { Product, Type } from '@common/models';
 import { PRODUCTS, TYPES } from '@utils/constants/db-entity-names';
 import { ProductTypes } from '@utils/enums';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { ProductsService } from './products.service';
 
-type TypeDoc = Type & { _id: Types.ObjectId };
+type DocType<T extends Record<string, any>> = T & { _id: Types.ObjectId };
+type ProductDoc = DocType<Product>;
+type TypeDoc = DocType<Type>;
 
 describe('Products integration', () => {
   let connection: Connection;
-  let productsController: ProductsController;
+  let productsService: ProductsService;
   let productModel: Model<Product>;
   let typeModel: Model<Type>;
   let typesDoc: TypeDoc[];
@@ -63,6 +65,24 @@ describe('Products integration', () => {
     }
   }
 
+  async function seedData() {
+    typesDoc = await typeModel.insertMany(types);
+    if (typesDoc.length !== types.length) throw Error('Error while seeding the types');
+
+    products.forEach((product) => {
+      const type = typesDoc.find((t) => t.productType === product.productType);
+      product.type = type ? type._id : '';
+    });
+  }
+
+  function getExpectedProduct(doc: ProductDoc) {
+    return {
+      ...doc,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      type: expect.objectContaining({ _id: doc.type }),
+    };
+  }
+
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [
@@ -86,19 +106,13 @@ describe('Products integration', () => {
     typeModel = mongooseInstance.model<Type>(TYPES);
 
     try {
-      typesDoc = await typeModel.insertMany(types);
-      if (typesDoc.length !== types.length) throw Error('Error while seeding the types');
-
-      products.forEach((product) => {
-        const type = typesDoc.find((t) => t.productType === product.productType);
-        product.type = type ? type._id : '';
-      });
+      await seedData();
     } catch (error) {
       await cleanup();
       throw error;
     }
 
-    productsController = moduleRef.get(ProductsController);
+    productsService = moduleRef.get(ProductsService);
   });
 
   beforeEach(async () => {
@@ -110,90 +124,90 @@ describe('Products integration', () => {
   });
 
   describe('findAll', () => {
-    it('should pass if returned many products', async () => {
-      const productDocs = (await productModel.insertMany(products)).map((p) => p.toObject());
-      const expected = productDocs.map((product) => {
-        const newProd = {
-          ...product,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          type: expect.objectContaining({ _id: product.type }),
-        };
-        return newProd;
-      });
+    let productDocs: ProductDoc[];
 
-      const res = await productsController.findAll({});
+    function getProductRes(data: ProductDoc[], count: number) {
+      return { items: data, totalCount: count };
+    }
 
-      expect(res).toEqual({ items: expected, totalCount: productDocs.length });
+    beforeEach(async () => {
+      productDocs = (await productModel.insertMany(products)).map((p) => p.toObject());
     });
 
-    it('should pass if returned products with type beer (query testing)', async () => {
-      const productDocs = (await productModel.insertMany(products)).map((p) => p.toObject());
+    it('should return all products', async () => {
+      const expected = productDocs.map((product) => getExpectedProduct(product));
+
+      const res = await productsService.findAll({});
+
+      expect(res).toEqual(getProductRes(expected, expected.length));
+    });
+
+    it('should filter products of type "beer" (query testing)', async () => {
       const beerDocs = productDocs.filter((p) => p.productType === ProductTypes.BEER);
-      const expected = beerDocs.map((product) => {
-        const newProd = {
-          ...product,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          type: expect.objectContaining({ _id: product.type }),
-        };
-        return newProd;
-      });
+      const expected = beerDocs.map((product) => getExpectedProduct(product));
 
-      const res = await productsController.findAll({ filter: { productType: ProductTypes.BEER } });
+      const res = await productsService.findAll({ filter: { productType: ProductTypes.BEER } });
 
-      expect(res).toEqual({ items: expected, totalCount: beerDocs.length });
+      expect(res).toEqual(getProductRes(expected, expected.length));
     });
   });
 
   describe('findOne', () => {
-    it('should pass when found product by id', async () => {
+    it('should return product by id', async () => {
       const productDoc = (await productModel.create(products[0])).toObject();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const expected = { ...productDoc, type: expect.objectContaining({ _id: productDoc.type }) };
+      const expected = getExpectedProduct(productDoc);
 
-      const res = await productsController.findOne({ id: productDoc._id.toString() });
+      const res = await productsService.findOne(productDoc._id.toString());
 
       expect(res).toEqual(expected);
     });
 
-    it('should pass if throw NotFoundException when product not found', async () => {
-      await expect(productsController.findOne({ id: invalidId })).rejects.toThrow(
-        NotFoundException,
-      );
+    it('should throw NotFoundException when product id does not exist', async () => {
+      await expect(productsService.findOne(invalidId)).rejects.toThrow(NotFoundException);
     });
   });
 
   describe('create', () => {
-    it('should pass if product is created', async () => {
-      const data = products[0];
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const res = await productsController.create(data as any);
+    function getProductDocDefaultFields() {
+      return {
+        _id: expect.any(Types.ObjectId) as Types.ObjectId,
+        createdAt: expect.any(Date) as Date,
+        updatedAt: expect.any(Date) as Date,
+      };
+    }
 
-      expect(res).toEqual(
-        expect.objectContaining({
-          ...data,
-          _id: expect.any(Types.ObjectId) as Types.ObjectId,
-          createdAt: expect.any(Date) as Date,
-          updatedAt: expect.any(Date) as Date,
-        }),
-      );
+    function getProductRes(data: Product) {
+      return {
+        ...data,
+        ...getProductDocDefaultFields(),
+      };
+    }
+
+    it('should create a product', async () => {
+      const data = { ...products[0] };
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      const res = await productsService.create(data as any);
+
+      expect(res).toEqual(expect.objectContaining(getProductRes(data)));
     });
 
-    it('should pass if product with unexisting type is not created', async () => {
+    it('should throw NotFoundException if product type id is invalid', async () => {
       const data: Product = { ...products[0], type: invalidId };
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const resPromise = productsController.create(data as any);
+      const resPromise = productsService.create(data as any);
 
       await expect(resPromise).rejects.toThrow(NotFoundException);
     });
 
-    it('should pass if product with wrong type is not created', async () => {
+    it('should throw BadRequestException if product type is wrong ("beer" while expecting "snack")', async () => {
       const snackType = typesDoc.find((t) => t.productType === ProductTypes.SNACK);
       const data: Product = {
         ...products[0],
         type: snackType ? snackType._id.toString() : '',
       };
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const resPromise = productsController.create(data as any);
+      const resPromise = productsService.create(data as any);
 
       await expect(resPromise).rejects.toThrow(BadRequestException);
     });

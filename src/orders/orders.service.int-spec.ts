@@ -254,7 +254,7 @@ describe('Orders integration', () => {
       expect(res).toEqual(orderDoc);
     });
 
-    it('should throw NotFoundException when order ID does not exist', async () => {
+    it('should throw NotFoundException when order id does not exist', async () => {
       await expect(ordersService.findOne(invalidId, userId.toString())).rejects.toThrow(
         NotFoundException,
       );
@@ -319,16 +319,7 @@ describe('Orders integration', () => {
       const totalPrice = getOrderTotalPrice(data.products);
 
       const res = await ordersService.create(data, userId.toString());
-      expect(res).toEqual(
-        expect.objectContaining(getOrderRes(dataRaw, totalPrice)),
-        // expect.objectContaining({
-        //   ...dataRaw,
-        //   totalPrice,
-        //   user: userId,
-        //   status: OrderStatuses.PENDING,
-        //   ...getOrderDocDefaultFields(),
-        // }),
-      );
+      expect(res).toEqual(expect.objectContaining(getOrderRes(dataRaw, totalPrice)));
     });
 
     it('should create an order and calculate total price (with expected total)', async () => {
@@ -343,18 +334,7 @@ describe('Orders integration', () => {
         userId.toString(),
       );
 
-      expect(res).toEqual(
-        expect.objectContaining(getOrderRes(dataRaw, totalPrice)),
-        // expect.objectContaining({
-        //   ...dataRaw,
-        //   totalPrice,
-        //   user: userId,
-        //   status: OrderStatuses.PENDING,
-        //   _id: expect.any(Types.ObjectId) as Types.ObjectId,
-        //   createdAt: expect.any(Date) as Date,
-        //   updatedAt: expect.any(Date) as Date,
-        // }),
-      );
+      expect(res).toEqual(expect.objectContaining(getOrderRes(dataRaw, totalPrice)));
     });
 
     it('should throw ConflictException if expected total does not match calculated total', async () => {
@@ -411,16 +391,6 @@ describe('Orders integration', () => {
           ...getOrderRes(data, totalPrice),
           products: productsWithoutDuplicatesWithObjectIds,
         }),
-        // expect.objectContaining({
-        //   ...data,
-        //   products: productsWithoutDuplicatesWithObjectIds,
-        //   totalPrice,
-        //   user: userId,
-        //   status: OrderStatuses.PENDING,
-        //   _id: expect.any(Types.ObjectId) as Types.ObjectId,
-        //   createdAt: expect.any(Date) as Date,
-        //   updatedAt: expect.any(Date) as Date,
-        // }),
       );
     });
   });
