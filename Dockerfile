@@ -2,8 +2,10 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
+COPY ai-assistant-lib ./ai-assistant-lib
 RUN npm ci
 COPY . .
+RUN npm run build:lib
 RUN npm run build
 
 # Prod Stage
