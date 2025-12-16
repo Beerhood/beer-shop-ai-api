@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "Apache-2.0 license",
+  "workspaces": [
+    "ai-assistant-lib"
+  ],
   "scripts": {
     "build": "nest build",
     "typecheck": "tsc --noEmit",
