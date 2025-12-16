@@ -164,7 +164,7 @@ describe('AI e2e', () => {
         .send({ text: apiResponses.intent.query })
         .expect(201)
         .expect((res) => {
-          expect(res.body).toEqual({ message: JSON.stringify(apiResponses.finalMessage) });
+          expect(res.body).toEqual({ message: apiResponses.finalMessage.message });
         });
 
       expect(mockCreate).toHaveBeenCalledTimes(3);

@@ -9,9 +9,10 @@ const sameSiteOption = 'strict';
 const expiresIn = 7 * 24 * 60 * 60 * 1000; //7 days
 
 @Injectable()
-export class RefreshTokenInterceptor
-  implements NestInterceptor<ResponseWithTokens, AccessTokenResponse>
-{
+export class RefreshTokenInterceptor implements NestInterceptor<
+  ResponseWithTokens,
+  AccessTokenResponse
+> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<AccessTokenResponse> {
     return next.handle().pipe(
       map((data: ResponseWithTokens) => {
