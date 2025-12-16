@@ -9,6 +9,8 @@
   "moduleNameMapper": {
     "^@common/(.*)$": "<rootDir>/src/common/$1",
     "^@utils/(.*)$": "<rootDir>/src/utils/$1",
-    "^src/(.*)$": "<rootDir>/src/$1"
+    "^src/(.*)$": "<rootDir>/src/$1",
+    "^ai-assistant$": "<rootDir>/ai-assistant-lib/dist",
+    "^ai-assistant/(.*)$": "<rootDir>/ai-assistant-lib/dist/$1"
   }
 }
