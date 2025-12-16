@@ -1,1 +1,0 @@
-{"version":3,"file":"off-topic.handler.js","sourceRoot":"","sources":["../../src/handlers/off-topic.handler.ts"],"names":[],"mappings":";;;AAGA,MAAa,eAAe;IAC1B,SAAS,CAAC,MAAc;QACtB,OAAO,MAAM,KAAK,WAAW,CAAC;IAChC,CAAC;IAED,KAAK,CAAC,MAAM,CAAC,MAAc;QACzB,OAAO,OAAO,CAAC,OAAO,CAAC,cAAc,CAAC,CAAC;IACzC,CAAC;CACF;AARD,0CAQC"}
