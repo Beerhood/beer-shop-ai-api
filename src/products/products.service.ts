@@ -18,8 +18,7 @@ import { ProductTypes } from '@utils/enums';
 import { GetAll } from '@utils/types/response.interface';
 import { Product } from '@common/models';
 import Decimal from 'decimal.js';
-import { BeerSearchCriteria } from 'src/ai/handlers/beer-recommendation.handler';
-import { SnackSearchCriteria } from 'src/ai/handlers/snack-recommendation.handler';
+import { BeerSearchCriteria, SnackSearchCriteria } from 'src/ai/interfaces/ai-search.interface';
 import { ProductInOrderDto } from 'src/orders/dto/create-order.dto';
 
 @Injectable()

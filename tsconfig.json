@@ -25,7 +25,9 @@
     // "exactOptionalPropertyTypes": true,
     "paths": {
       "@utils/*": ["./src/utils/*"],
-      "@common/*": ["./src/common/*"]
+      "@common/*": ["./src/common/*"],
+      "ai-assistant": ["./ai-assistant-lib/src"],
+      "ai-assistant/*": ["./ai-assistant-lib/src/*"]
     }
   }
 }

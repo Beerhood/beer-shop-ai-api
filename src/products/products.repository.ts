@@ -4,8 +4,7 @@ import { Product, ProductsModel } from '@common/models/';
 import { FilterQuery, SortOrder } from 'mongoose';
 import { ProductTypes } from '@utils/enums';
 import { createProductFilter } from './utils/mongodb/create-product-filter';
-import { BeerSearchCriteria } from 'src/ai/handlers/beer-recommendation.handler';
-import { SnackSearchCriteria } from 'src/ai/handlers/snack-recommendation.handler';
+import { BeerSearchCriteria, SnackSearchCriteria } from 'src/ai/interfaces/ai-search.interface';
 
 @Injectable()
 export class ProductsRepository extends BaseRepository<Product> {

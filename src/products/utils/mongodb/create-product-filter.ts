@@ -1,7 +1,6 @@
 import { ProductTypes } from '@utils/enums';
 import { createFilter } from '@utils/mongodb/create-filter';
-import { BeerSearchCriteria } from 'src/ai/handlers/beer-recommendation.handler';
-import { SnackSearchCriteria } from 'src/ai/handlers/snack-recommendation.handler';
+import { BeerSearchCriteria, SnackSearchCriteria } from 'src/ai/interfaces/ai-search.interface';
 
 export function createProductFilter(
   criteria: BeerSearchCriteria | SnackSearchCriteria,

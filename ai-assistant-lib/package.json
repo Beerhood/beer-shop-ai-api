@@ -1,0 +1,17 @@
+{
+  "name": "ai-assistant",
+  "version": "1.0.0",
+  "description": "A library for handling AI-based conversations and recommendations.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
