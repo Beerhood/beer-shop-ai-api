@@ -1,5 +1,5 @@
-import { Product } from '@common/models';
-import { SnackSearchCriteria } from '../handlers/snack-recommendation.handler';
+import { Product } from '../ports';
+import { SnackSearchCriteria } from '../domain/interfaces/ai.interfaces';
 
 export const getSnackCriteriaPrompt = (query: string): string => `
 You are a food pairing expert. Analyze the user's request for a snack and convert it into a structured JSON object for a database search.

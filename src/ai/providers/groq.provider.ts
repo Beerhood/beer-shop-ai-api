@@ -1,11 +1,11 @@
-import { AiProviderInterface } from './ai-provider.interface';
+import { AiProvider } from 'ai-assistant-lib/src/ports';
 import { ConfigService } from '@nestjs/config';
-import { AppConfiguration } from '../../config/configuration';
+import { AppConfiguration } from 'src/config/configuration';
 import { Injectable } from '@nestjs/common';
 import Groq from 'groq-sdk';
 
 @Injectable()
-export class GroqProvider implements AiProviderInterface {
+export class GroqProvider implements AiProvider {
   private groqClient: Groq;
   constructor(private readonly configService: ConfigService<AppConfiguration>) {
     const groqConfig = this.configService.get('groq', { infer: true })!;

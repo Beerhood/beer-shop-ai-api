@@ -1,4 +1,4 @@
-import { Product } from '@common/models';
+import { Product } from '../ports';
 
 export const getPairingCriteriaPrompt = (query: string): string => `
 You are an expert sommelier. A user wants a beer and a snack pairing.

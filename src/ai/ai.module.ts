@@ -1,60 +1,35 @@
 import { Module } from '@nestjs/common';
-import { AiService } from './ai.service';
 import { AiController } from './ai.controller';
+import { AiService } from './ai.service';
 import { ProductsModule } from '../products/products.module';
-import { GroqProvider } from './provider/groq.provider';
-import { BeerRecommendationHandler } from './handlers/beer-recommendation.handler';
-import { OffTopicHandler } from './handlers/off-topic.handler';
-import { IntentHandlerFactory } from './handlers/intent-handler.factory';
-import { IntentHandlerInterface } from './interfaces/intent-handler.interface';
-import {
-  AI_PROVIDER_TOKEN,
-  GROQ_AI_PROVIDER_TOKEN,
-  INTENT_HANDLERS_TOKEN,
-} from './constants/ai.const';
-import { ChainAiService } from './provider/chain-ai.service';
-import { GeneralKnowledgeHandler } from './handlers/general-knowledge.handler';
-import { SnackRecommendationHandler } from './handlers/snack-recommendation.handler';
-import { PairingRecommendationHandler } from './handlers/pairing-recommendation.handler';
+import { ProductFinderAdapter } from './providers/product.adapter';
+import { GroqProvider } from './providers/groq.provider';
+import { AiAssistant } from 'ai-assistant';
+import { ChainAiService } from './providers/chain-ai.service';
+import { AI_ASSISTANT_TOKEN, CHAIN_AI_PROVIDER_TOKEN } from './constants/ai.const';
 
 @Module({
   imports: [ProductsModule],
   controllers: [AiController],
   providers: [
-    {
-      provide: GROQ_AI_PROVIDER_TOKEN,
-      useClass: GroqProvider,
-    },
-    {
-      provide: AI_PROVIDER_TOKEN,
-      useClass: ChainAiService,
-    },
-    BeerRecommendationHandler,
-    OffTopicHandler,
-    GeneralKnowledgeHandler,
-    SnackRecommendationHandler,
-    PairingRecommendationHandler,
-    {
-      provide: INTENT_HANDLERS_TOKEN,
-      useFactory: (
-        beerHandler: BeerRecommendationHandler,
-        offTopicHandler: OffTopicHandler,
-        generalHandler: GeneralKnowledgeHandler,
-        snackHandler: SnackRecommendationHandler,
-        pairingHandler: PairingRecommendationHandler,
-      ): IntentHandlerInterface[] => {
-        return [beerHandler, offTopicHandler, generalHandler, snackHandler, pairingHandler];
-      },
-      inject: [
-        BeerRecommendationHandler,
-        OffTopicHandler,
-        GeneralKnowledgeHandler,
-        SnackRecommendationHandler,
-        PairingRecommendationHandler,
-      ],
-    },
-    IntentHandlerFactory,
     AiService,
+    GroqProvider,
+    ProductFinderAdapter,
+    {
+      provide: CHAIN_AI_PROVIDER_TOKEN,
+      useFactory: (groq: GroqProvider) => {
+        const providers = [groq];
+        return new ChainAiService(providers);
+      },
+      inject: [GroqProvider],
+    },
+    {
+      provide: AI_ASSISTANT_TOKEN,
+      useFactory: (aiProvider: ChainAiService, productFinder: ProductFinderAdapter) => {
+        return new AiAssistant(aiProvider, productFinder);
+      },
+      inject: [CHAIN_AI_PROVIDER_TOKEN, ProductFinderAdapter],
+    },
   ],
 })
 export class AiModule {}

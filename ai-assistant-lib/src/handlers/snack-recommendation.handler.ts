@@ -1,10 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IntentHandlerInterface } from '../interfaces/intent-handler.interface';
-import { Intent } from '../constants/ai.const';
-import { ProductsService } from 'src/products/products.service';
-import { ProductTypes } from '@utils/enums';
-import { AiProviderInterface } from '../provider/ai-provider.interface';
-import { AI_PROVIDER_TOKEN } from '../constants/ai.const';
+import { IntentHandler } from '../domain/interfaces/ai.interfaces';
+import { Intent } from '../domain/types/ai.types';
+import { ProductFinder } from '../ports';
+import { ProductTypes } from '../ports';
+import { AiProvider } from '../ports';
 import {
   getSnackCriteriaPrompt,
   handleSnackNotFoundPrompt,
@@ -19,12 +17,10 @@ export interface SnackSearchCriteria {
   };
 }
 
-@Injectable()
-export class SnackRecommendationHandler implements IntentHandlerInterface {
+export class SnackRecommendationHandler implements IntentHandler {
   constructor(
-    @Inject(AI_PROVIDER_TOKEN)
-    private readonly aiProvider: AiProviderInterface,
-    private readonly productsService: ProductsService,
+    private readonly aiProvider: AiProvider,
+    private readonly productFinder: ProductFinder,
   ) {}
 
   canHandle(intent: Intent): boolean {
@@ -33,11 +29,7 @@ export class SnackRecommendationHandler implements IntentHandlerInterface {
 
   async handle(query: string): Promise<string> {
     const criteria = await this.getSnackCriteriaFromAi(query);
-    const foundProducts = await this.productsService.findRecommended(
-      criteria,
-      ProductTypes.SNACK,
-      3,
-    );
+    const foundProducts = await this.productFinder.findRecommended(criteria, ProductTypes.SNACK, 3);
 
     if (foundProducts.length === 0) {
       return this.handleNotFound(query, criteria);

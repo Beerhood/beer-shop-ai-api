@@ -1,5 +1,5 @@
-import { Product } from '@common/models';
-import { BeerSearchCriteria } from '../handlers/beer-recommendation.handler';
+import { Product } from '../ports';
+import { BeerSearchCriteria } from '../domain/interfaces/ai.interfaces';
 
 export const getBeerCriteriaPrompt = (userPrompt: string): string => `
 You are a world-class beer sommelier expert working for an e-commerce platform. Your task is to meticulously analyze a user's request and convert it into a structured JSON object for a database search.

@@ -1,25 +1,20 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IntentHandlerInterface } from '../interfaces/intent-handler.interface';
-import { Intent } from '../constants/ai.const';
-import { ProductsService } from 'src/products/products.service';
-import { ProductTypes } from '@utils/enums';
-import { AiProviderInterface } from '../provider/ai-provider.interface';
-import { AI_PROVIDER_TOKEN } from '../constants/ai.const';
+import { IntentHandler } from '../domain/interfaces/ai.interfaces';
+import { Intent } from '../domain/types/ai.types';
+import { ProductFinder } from '../ports';
+import { ProductTypes } from '../ports';
+import { AiProvider } from '../ports';
 import { getBeerCriteriaPrompt } from '../prompts/beer-recommendation.prompts';
 import { getSnackCriteriaPrompt } from '../prompts/snack-recommendation.prompts';
 import {
   getPairingCriteriaPrompt,
   synthesizePairingSuccessResponsePrompt,
 } from '../prompts/pairing-recommendation.prompts';
-import { BeerSearchCriteria } from './beer-recommendation.handler';
-import { SnackSearchCriteria } from './snack-recommendation.handler';
+import { SnackSearchCriteria, BeerSearchCriteria } from '../domain/interfaces/ai.interfaces';
 
-@Injectable()
-export class PairingRecommendationHandler implements IntentHandlerInterface {
+export class PairingRecommendationHandler implements IntentHandler {
   constructor(
-    @Inject(AI_PROVIDER_TOKEN)
-    private readonly aiProvider: AiProviderInterface,
-    private readonly productsService: ProductsService,
+    private readonly aiProvider: AiProvider,
+    private readonly productFinder: ProductFinder,
   ) {}
 
   canHandle(intent: Intent): boolean {
@@ -31,11 +26,7 @@ export class PairingRecommendationHandler implements IntentHandlerInterface {
     const beerCriteriaPrompt = getBeerCriteriaPrompt(pairingQuery.beerQuery);
     const beerCriteriaString = await this.aiProvider.getCompletion(beerCriteriaPrompt);
     const beerCriteria = JSON.parse(beerCriteriaString) as BeerSearchCriteria;
-    const foundBeers = await this.productsService.findRecommended(
-      beerCriteria,
-      ProductTypes.BEER,
-      1,
-    );
+    const foundBeers = await this.productFinder.findRecommended(beerCriteria, ProductTypes.BEER, 1);
 
     if (foundBeers.length === 0) {
       return `{"message": "На жаль, я не зміг знайти пиво за вашим запитом: ${pairingQuery.beerQuery}. Спробуйте щось інше."}`;
@@ -44,7 +35,7 @@ export class PairingRecommendationHandler implements IntentHandlerInterface {
     const snackCriteriaPrompt = getSnackCriteriaPrompt(pairingQuery.snackQuery);
     const snackCriteriaString = await this.aiProvider.getCompletion(snackCriteriaPrompt);
     const snackCriteria = JSON.parse(snackCriteriaString) as SnackSearchCriteria;
-    const foundSnacks = await this.productsService.findRecommended(
+    const foundSnacks = await this.productFinder.findRecommended(
       snackCriteria,
       ProductTypes.SNACK,
       1,
