@@ -12,6 +12,7 @@ RUN npm run build
 FROM node:20-alpine
 WORKDIR /app
 COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/ai-assistant-lib ./ai-assistant-lib
 RUN npm ci --only=production --ignore-scripts
 COPY --from=builder /app/dist ./dist
 
