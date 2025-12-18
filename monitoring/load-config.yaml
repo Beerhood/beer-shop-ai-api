@@ -1,0 +1,65 @@
+config:
+  target: 'http://localhost:3000/api'
+  processor: './scripts/processor.js'
+  phases:
+    - duration: 60
+      arrivalRate: 1
+      rampTo: 5
+      name: Warm up phase
+    - duration: 60
+      arrivalRate: 5
+      rampTo: 10
+      name: Ramp up load
+    - duration: 30
+      arrivalRate: 10
+      rampTo: 30
+      name: Spike phase
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+
+scenarios:
+  - name: 'Browsing Flow'
+    weight: 60
+    flow:
+      - get:
+          url: '/types'
+      - get:
+          url: '/products'
+          capture:
+            - json: '$.items[0]._id'
+              as: 'targetProductId'
+      - get:
+          url: '/products/{{ targetProductId }}'
+
+  - name: 'Buying Flow'
+    weight: 30
+    flow:
+      - get:
+          url: '/products'
+          capture:
+            - json: '$.items[0]._id'
+              as: 'p1'
+            - json: '$.items[1]._id'
+              as: 'p2'
+      - post:
+          url: '/orders'
+          headers:
+            Authorization: 'Bearer  {{ $env.AUTH_TEST_TOKEN }}'
+          json:
+            address: 'Kyiv, Load Test Str.'
+            products:
+              - item: '{{ p1 }}'
+                count: 2
+              - item: '{{ p2 }}'
+                count: 3
+      - get:
+          url: '/orders'
+
+  - name: 'Check Orders'
+    weight: 10
+    flow:
+      - get:
+          url: '/orders'
+          headers:
+            Authorization: 'Bearer  {{ $env.AUTH_TEST_TOKEN }}'

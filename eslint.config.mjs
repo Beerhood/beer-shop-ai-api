@@ -6,7 +6,14 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs', 'dist', '**/dist/**', '**/node_modules/**', 'ai-assistant-lib'],
+    ignores: [
+      'eslint.config.mjs',
+      'monitoring',
+      'dist',
+      '**/dist/**',
+      '**/node_modules/**',
+      'ai-assistant-lib',
+    ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
