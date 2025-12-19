@@ -24,13 +24,19 @@
     "test": "npm run test:unit && npm run test:int && npm run test:e2e",
     "test:test": "node -e \"process.exit(0)\"",
     "test:unit": "jest",
-    "test:int": " cross-env NODE_ENV=test jest --config jest-int.json --runInBand",
+    "test:int": "cross-env NODE_ENV=test jest --config jest-int.json --runInBand",
     "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --runInBand",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "prepare": "husky",
-    "stryker": "npx stryker run"
+    "stryker": "npx stryker run",
+    "monitoring:seed": "cross-env NODE_ENV=test ts-node -r tsconfig-paths/register monitoring/utils/seed.ts",
+    "monitoring:analyze": "cross-env NODE_ENV=test ts-node -r tsconfig-paths/register monitoring/utils/analyze.ts",
+    "monitoring:load": "npm run build && npm run monitoring:seed && cross-env NODE_ENV=test clinic doctor --dest monitoring/reports/clinic --on-port \"artillery run monitoring/load-config.yaml --output monitoring/reports/load-report.json\" -- node dist/src/main && npm run monitoring:analyze",
+    "monitoring:load:cpu": "npm run build && npm run monitoring:seed && cross-env NODE_ENV=test clinic flame --dest monitoring/reports/clinic --on-port \"artillery run monitoring/load-config.yaml --output monitoring/reports/load-report.json\" -- node dist/src/main && npm run monitoring:analyze",
+    "monitoring:load:ram": "npm run build && npm run monitoring:seed && cross-env NODE_ENV=test clinic heapprofiler --dest monitoring/reports/clinic --on-port \"artillery run monitoring/load-config.yaml --output monitoring/reports/load-report.json\" -- node dist/src/main && npm run monitoring:analyze",
+    "monitoring:report:html": "npx artillery@1.7.9 report monitoring/reports/load-report.json --output monitoring/reports/load-report.html"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -41,6 +47,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.1",
+    "ai-assistant": "file:./ai-assistant-lib",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
@@ -55,12 +62,12 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1",
-    "ai-assistant": "file:./ai-assistant-lib"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
+    "@faker-js/faker": "^10.1.0",
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.1.9",
@@ -77,6 +84,8 @@
     "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^8.46.0",
     "@typescript-eslint/parser": "^8.46.0",
+    "artillery": "^2.0.27",
+    "clinic": "^9.1.0",
     "cross-env": "^10.1.0",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.0.1",

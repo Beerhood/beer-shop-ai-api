@@ -1,8 +1,8 @@
 import mongoose, { Schema, model } from 'mongoose';
 import { Types } from 'mongoose';
 import { OrderStatuses } from '@utils/enums';
-import { NONEXISTENT_RELATION_ERROR } from '@utils/constants/db-errors';
 import { ORDERS } from '@utils/constants/db-entity-names';
+import { NONEXISTENT_RELATION_ERROR } from '@utils/constants/db-errors';
 
 export interface ProductInOrder {
   item: Types.ObjectId | string;
@@ -41,14 +41,14 @@ const OrderSchema = new Schema<Order>(
           ref: 'Products',
           required: true,
           index: true,
-          validate: {
-            validator: async function (v) {
-              const product: unknown = await mongoose.model('Products').find({ _id: v });
-              return !!product;
-            },
-            type: NONEXISTENT_RELATION_ERROR,
-            message: `Trying to set nonexistent Product to order`,
-          },
+          // validate: {
+          //   validator: async function (v) {
+          //     const product: unknown = await mongoose.model('Products').find({ _id: v });
+          //     return !!product;
+          //   },
+          //   type: NONEXISTENT_RELATION_ERROR,
+          //   message: `Trying to set nonexistent Product to order`,
+          // },
         },
         count: { type: Number, min: 1, max: 1000, required: true },
       },

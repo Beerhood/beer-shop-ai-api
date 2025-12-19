@@ -1,7 +1,6 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { Types } from 'mongoose';
 import { ProductTypes } from '@utils/enums';
-import { NONEXISTENT_RELATION_ERROR } from '@utils/constants/db-errors';
 import { PRODUCTS } from '@utils/constants/db-entity-names';
 
 export interface Product {
@@ -34,14 +33,14 @@ const ProductSchema = new Schema<Product>(
       ref: 'Types',
       required: true,
       index: true,
-      validate: {
-        validator: async function (v) {
-          const type: unknown = await mongoose.model('Types').findById(v);
-          return !!type;
-        },
-        type: NONEXISTENT_RELATION_ERROR,
-        message: `Trying to set nonexistent Type to product`,
-      },
+      // validate: {
+      //   validator: async function (v) {
+      //     const type: unknown = await mongoose.model('Types').findById(v);
+      //     return !!type;
+      //   },
+      //   type: NONEXISTENT_RELATION_ERROR,
+      //   message: `Trying to set nonexistent Type to product`,
+      // },
     },
     price: { type: Number, min: 0, max: 999999, required: true },
     productType: {
