@@ -14,6 +14,10 @@ config:
       arrivalRate: 10
       rampTo: 30
       name: Spike phase
+    - duration: 60
+      arrivalRate: 30
+      rampTo: 1
+      name: Cool down phase
   defaults:
     headers:
       Content-Type: 'application/json'
@@ -23,9 +27,9 @@ scenarios:
     weight: 60
     flow:
       - get:
-          url: '/productTypes'
+          url: '/productTypes?limit=10&skip=0'
       - get:
-          url: '/products'
+          url: '/products?limit=10&skip=0'
           capture:
             - json: '$.items[0]._id'
               as: 'targetProductId'
@@ -36,7 +40,7 @@ scenarios:
     weight: 30
     flow:
       - get:
-          url: '/products'
+          url: '/products?limit=10&skip=0'
           capture:
             - json: '$.items[0]._id'
               as: 'p1'
@@ -54,7 +58,7 @@ scenarios:
               - item: '{{ p2 }}'
                 count: 3
       - get:
-          url: '/orders'
+          url: '/orders?limit=10&skip=0'
           headers:
             Authorization: 'Bearer {{ $env.TEST_AUTH_TOKEN }}'
 
@@ -62,6 +66,6 @@ scenarios:
     weight: 10
     flow:
       - get:
-          url: '/orders'
+          url: '/orders?limit=10&skip=0'
           headers:
             Authorization: 'Bearer {{ $env.TEST_AUTH_TOKEN }}'
