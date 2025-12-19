@@ -5,7 +5,7 @@ mongoose.Promise = global.Promise;
 
 export async function getDBConnection(srv: string, nodeEnv: string) {
   const options = {
-    serverSelectionTimeoutMS: 1000,
+    serverSelectionTimeoutMS: 10000,
   };
 
   if (![ENVIRONMENT.PRODUCTION as string, ENVIRONMENT.TEST as string].includes(nodeEnv)) {

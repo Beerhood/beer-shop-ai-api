@@ -147,7 +147,7 @@ async function bootstrap() {
   fs.writeFileSync(CONTEXT_FILE, envContent);
   console.log(`Auth token successfully saved to: ${CONTEXT_FILE}`);
 
-  await connection.db.command({ profile: 2, slowms: 5 });
+  await connection.db.command({ profile: 2 });
   console.log('Mongo Profiling Enabled');
 
   await app.close();

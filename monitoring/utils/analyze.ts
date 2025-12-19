@@ -28,7 +28,7 @@ async function analyze() {
   const cursor = connection.db
     .collection('system.profile')
     .find({
-      millis: { $gt: 20 },
+      millis: { $gt: 0 },
       op: { $in: ['query', 'command'] },
       ns: { $not: /system\.profile/ },
     })

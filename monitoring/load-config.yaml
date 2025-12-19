@@ -23,7 +23,7 @@ scenarios:
     weight: 60
     flow:
       - get:
-          url: '/types'
+          url: '/productTypes'
       - get:
           url: '/products'
           capture:
@@ -45,7 +45,7 @@ scenarios:
       - post:
           url: '/orders'
           headers:
-            Authorization: 'Bearer  {{ $env.AUTH_TEST_TOKEN }}'
+            Authorization: 'Bearer {{ $env.TEST_AUTH_TOKEN }}'
           json:
             address: 'Kyiv, Load Test Str.'
             products:
@@ -55,6 +55,8 @@ scenarios:
                 count: 3
       - get:
           url: '/orders'
+          headers:
+            Authorization: 'Bearer {{ $env.TEST_AUTH_TOKEN }}'
 
   - name: 'Check Orders'
     weight: 10
@@ -62,4 +64,4 @@ scenarios:
       - get:
           url: '/orders'
           headers:
-            Authorization: 'Bearer  {{ $env.AUTH_TEST_TOKEN }}'
+            Authorization: 'Bearer {{ $env.TEST_AUTH_TOKEN }}'
